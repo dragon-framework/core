@@ -1,7 +1,8 @@
 {
     "name": "dragon-framework/core",
-    "description": "",
     "type": "library",
+    "description": "Dragon PHP framework",
+    "keywords": ["framework"],
     "license": "MIT",
     "minimum-stability": "stable",
     "authors": [
