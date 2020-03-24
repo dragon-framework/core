@@ -1,0 +1,22 @@
+{
+    "name": "dragon-framework/core",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arnaud BODEL",
+            "email": "dragon.framework@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Dragon\\": "src/"
+        },
+        "files": [
+            "src/Utils/Utils.php"
+        ]
+    },
+    "require": {
+        "twig/twig": "^3.0"
+    }
+}
