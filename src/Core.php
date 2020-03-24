@@ -32,8 +32,8 @@ class Core
 
 		// Config files
 		$config_file = $dir.'config.php';
-		$config_dev  = $dir.'config_dev.php';
-        $config_test = $dir.'config_test.php';
+		$config_dev  = $dir.'config-dev.php';
+        $config_test = $dir.'config-test.php';
         
 
         if (file_exists($config_file))
