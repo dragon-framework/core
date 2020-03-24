@@ -43,6 +43,22 @@ class Core
                 require_once $config_file
             );
         }
+
+        if (file_exists($config_dev))
+        {
+            array_merge(
+                $this->config,
+                require_once $config_dev
+            );
+        }
+
+        if (file_exists($config_test))
+        {
+            array_merge(
+                $this->config,
+                require_once $config_test
+            );
+        }
     }
 
 
