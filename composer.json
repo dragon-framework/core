@@ -2,6 +2,7 @@
     "name": "dragon-framework/core",
     "type": "library",
     "license": "MIT",
+    "minimum-stability": "stable",
     "authors": [
         {
             "name": "Arnaud BODEL",
