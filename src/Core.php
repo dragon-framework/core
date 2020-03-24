@@ -45,6 +45,12 @@ class Core
         }
     }
 
+
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
     public function run()
     {
         return "Run thE aPP";
