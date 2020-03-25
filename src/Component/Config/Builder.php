@@ -10,7 +10,7 @@ class Builder
      *
      * @var array
      */
-    private $config = [];
+    protected $config = [];
 
     public function __construct()
     {
@@ -43,8 +43,8 @@ class Builder
         return $this;
     }
 
-    public function getConfig(): array
-    {
-        return $this->config;
-    }
+    // public function getConfig(): array
+    // {
+    //     return $this->config;
+    // }
 }

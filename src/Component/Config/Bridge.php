@@ -3,11 +3,11 @@ namespace Dragon\Component\Config;
 
 use Exception;
 
-class Bridge 
+class Bridge extends Builder
 {
     public function config(?string $key = null)
     {
-        $config = $this->config->getConfig();
+        $config = $this->config;
 
         if (!empty($key))
         {
