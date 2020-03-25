@@ -31,7 +31,7 @@ class Builder
             return require_once $file;
         }
 
-        return false;
+        return [];
     }
 
     private function addConfig(array $params): self
