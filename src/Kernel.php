@@ -2,9 +2,9 @@
 
 namespace Dragon;
 
-use Exception;
+// use Exception;
 
-class Kernel
+class Kernel extends Bridge
 {
     /**
      * The App config
@@ -21,22 +21,22 @@ class Kernel
 
 
 
-    public function config(?string $key = null)
-    {
-        $config = $this->config->getConfig();
+    // public function config(?string $key = null)
+    // {
+    //     $config = $this->config->getConfig();
 
-        if (!empty($key))
-        {
-            if (!isset($config[$key]))
-            {
-                throw new Exception("The index $key is not defined in your config.");
-            }
+    //     if (!empty($key))
+    //     {
+    //         if (!isset($config[$key]))
+    //         {
+    //             throw new Exception("The index $key is not defined in your config.");
+    //         }
 
-            return $config[$key];
-        }
+    //         return $config[$key];
+    //     }
 
-        return $config;
-    }
+    //     return $config;
+    // }
 
 
 
