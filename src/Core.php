@@ -22,14 +22,6 @@ class Core
     public function __construct()
     {
         $this->config = new \Dragon\Component\Config;
-
-
-        // echo "App Construct<br>";
-        // echo self::APP_DIR."<br>";
-
-
-
-
     }
 
 
