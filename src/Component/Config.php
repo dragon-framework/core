@@ -14,6 +14,10 @@ class Config
 
     public function __construct()
     {
+        $this->config = array_merge($this->config, [
+            'env' => "prod",
+        ]);
+
         $this->addConfig( self::DIRECTORY . "config.php" );
         $this->addConfig( self::DIRECTORY . "config-dev.php" );
         $this->addConfig( self::DIRECTORY . "config-test.php" );
