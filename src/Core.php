@@ -17,7 +17,7 @@ class Core
 
     public function __construct()
     {
-        $this->config = new \Dragon\Component\Config\Config;
+        $this->config = new \Dragon\Component\Config\Builder;
     }
 
 
