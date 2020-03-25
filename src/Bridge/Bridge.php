@@ -1,8 +1,6 @@
 <?php 
 namespace Dragon\Bridge;
 
-use Dragon\Component\Config\Bridge as ConfigBridge;
-
 class Bridge
 {
     /**
@@ -13,7 +11,7 @@ class Bridge
      */
     public function config(?string $key = null)
     {
-        $bridge = new ConfigBridge;
+        $bridge = new \Dragon\Component\Config\Bridge;
         
         return $bridge->config( $key );
     }

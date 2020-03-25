@@ -24,13 +24,13 @@ class Builder
     {
         if (file_exists($file))
         {
-            return require_once $file;
+            return include $file;
         }
 
         return [];
     }
 
-    private function addConfig(array $params): self
+    private function addConfig($params): self
     {
         if (is_array($params))
         {
@@ -42,9 +42,4 @@ class Builder
 
         return $this;
     }
-
-    // public function getConfig(): array
-    // {
-    //     return $this->config;
-    // }
 }
