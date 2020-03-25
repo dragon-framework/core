@@ -19,6 +19,8 @@ class Kernel
     }
 
 
+
+
     public function config(?string $key = null)
     {
         $config = $this->config->getConfig();
@@ -35,6 +37,9 @@ class Kernel
 
         return $config;
     }
+
+
+    
 
     public function run()
     {
