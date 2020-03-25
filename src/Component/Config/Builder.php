@@ -1,7 +1,7 @@
 <?php
 namespace Dragon\Component\Config;
 
-class Config
+class Builder
 {
     /**
      * Path of the config directory
@@ -17,10 +17,8 @@ class Config
 
     public function __construct()
     {
-        $this->config = array_merge($this->config, [
-            'env' => "prod",
-        ]);
 
+        $this->addConfig( $this->includeConfig( "Base.php" ) );
         $this->addConfig( $this->includeConfig( self::DIRECTORY . "config.php" ) );
         $this->addConfig( $this->includeConfig( self::DIRECTORY . "config-dev.php" ) );
         $this->addConfig( $this->includeConfig( self::DIRECTORY . "config-test.php" ) );
