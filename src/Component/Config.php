@@ -3,6 +3,9 @@ namespace Dragon\Component;
 
 class Config
 {
+    /**
+     * Path of the config directory
+     */
     const DIRECTORY = \Dragon\Core::DIRECTORY_APP . "config/";
 
     /**
