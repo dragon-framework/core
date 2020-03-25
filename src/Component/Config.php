@@ -14,38 +14,30 @@ class Config
 
     public function __construct()
     {
-		// Config files
-		$config_file = self::DIRECTORY . "config.php";
-		$config_dev  = self::DIRECTORY . "config-dev.php";
-        $config_test = self::DIRECTORY . "config-test.php";
-        
-
-        if (file_exists($config_file))
-        {
-            $this->config = array_merge(
-                $this->config,
-                require_once $config_file
-            );
-        }
-
-        if (file_exists($config_dev))
-        {
-            $this->config = array_merge(
-                $this->config,
-                require_once $config_dev
-            );
-        }
-
-        if (file_exists($config_test))
-        {
-            $this->config = array_merge(
-                $this->config,
-                require_once $config_test
-            );
-        }
+        $this->addConfig( self::DIRECTORY . "config.php" );
+        $this->addConfig( self::DIRECTORY . "config-dev.php" );
+        $this->addConfig( self::DIRECTORY . "config-test.php" );
     }
 
-    public function getConfig()
+    private function addConfig(string $file): self
+    {
+        if (file_exists($file))
+        {
+            $params = require_once $file;
+
+            if (is_array($params))
+            {
+                $this->config = array_merge(
+                    $this->config,
+                    $params
+                );
+            }
+        }
+
+        return $this;
+    }
+
+    public function getConfig(): array
     {
         return $this->config;
     }
