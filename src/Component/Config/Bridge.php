@@ -1,11 +1,12 @@
 <?php
 namespace Dragon\Component\Config;
 
+use Dragon\Bridge\BridgeInterface;
 use Exception;
 
-class Bridge extends Builder
+class Bridge extends Builder implements BridgeInterface
 {
-    public function config(?string $key = null)
+    public function getBridge(?string $key = null)
     {
         $config = $this->config;
 
