@@ -14,23 +14,32 @@ class Builder
 
     public function __construct()
     {
-        $this->addConfig( $this->includeConfig( __DIR__ . "/Base.php" ) );
-        $this->addConfig( $this->includeConfig( Directory::DIRECTORY_CONFIG . "config.php" ) );
-        $this->addConfig( $this->includeConfig( Directory::DIRECTORY_CONFIG . "config-dev.php" ) );
-        $this->addConfig( $this->includeConfig( Directory::DIRECTORY_CONFIG . "config-test.php" ) );
+        $this
+            ->addConfig( $this->getConfigFile( __DIR__ . "/Base.php" ) )
+            ->addConfig( $this->getConfigFile( Directory::DIRECTORY_CONFIG . "config.php" ) )
+            ->addConfig( $this->getConfigFile( Directory::DIRECTORY_CONFIG . "config-dev.php" ) )
+            ->addConfig( $this->getConfigFile( Directory::DIRECTORY_CONFIG . "config-test.php" ) )
+        ;
     }
 
-    private function includeConfig(string $file)
+    /**
+     * Get the config file
+     *
+     * @param string $file
+     * @return void
+     */
+    private function getConfigFile(string $file): array
     {
-        if (file_exists($file))
-        {
-            return include $file;
-        }
-
-        return [];
+        return file_exists($file) ? include $file : [];
     }
 
-    private function addConfig($params): self
+    /**
+     * Merge config array
+     *
+     * @param array $params
+     * @return self
+     */
+    private function addConfig(array $params): self
     {
         if (is_array($params))
         {

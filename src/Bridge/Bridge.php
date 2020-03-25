@@ -11,8 +11,6 @@ class Bridge
      */
     public function config(?string $key = null)
     {
-        $bridge = new \Dragon\Component\Config\Bridge;
-        
-        return $bridge->config( $key );
+        return (new \Dragon\Component\Config\Bridge)->config( $key );
     }
 }
