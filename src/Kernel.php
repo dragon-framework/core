@@ -4,7 +4,7 @@ namespace Dragon;
 
 use Exception;
 
-class Core
+class Kernel
 {
     /**
      * The App config
