@@ -39,10 +39,13 @@ class Kernel
     }
 
 
-    
+
 
     public function run()
     {
+        // Session
+        $this->config('session') ? session_start() : null;
+
         return "Run thE aPP";
     }
 }
