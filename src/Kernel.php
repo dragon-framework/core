@@ -2,6 +2,8 @@
 
 namespace Dragon;
 
+use Dragon\Bridge\Bridge;
+
 // use Exception;
 
 class Kernel extends Bridge

@@ -1,5 +1,5 @@
 <?php 
-namespace Dragon;
+namespace Dragon\Bridge;
 
 use Dragon\Component\Config\Bridge as ConfigBridge;
 
