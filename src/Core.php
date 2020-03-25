@@ -2,16 +2,12 @@
 
 namespace Dragon;
 
-use Exception;
-
 class Core
 {
 	const DIRECTORY_APP = './../app/';
 	const DIRECTORY_SRC = './../src/';
     const DIRECTORY_ROOT = './../public/';
     
-
-
     /**
      * The App config
      *
@@ -21,7 +17,7 @@ class Core
 
     public function __construct()
     {
-        $this->config = new \Dragon\Component\Config;
+        $this->config = new \Dragon\Component\Config\Config;
     }
 
 
