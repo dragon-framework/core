@@ -18,10 +18,10 @@ class Builder
         $fs = new FileSystem;
 
         $this
-            ->addConfig( $fs->include( __DIR__ . "/Base.php" ) )
-            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config.php" ) )
-            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config-dev.php" ) )
-            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config-test.php" ) )
+            ->addConfig( $fs->include( __DIR__ . "/Base.php" ) ?? [] )
+            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config.php" ) ?? [] )
+            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config-dev.php" ) ?? [] )
+            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config-test.php" ) ?? [] )
         ;
     }
 
