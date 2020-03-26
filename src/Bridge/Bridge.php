@@ -1,7 +1,7 @@
 <?php 
 namespace Dragon\Bridge;
 
-class Bridge
+abstract class Bridge
 {
     /**
      * Config Bridge

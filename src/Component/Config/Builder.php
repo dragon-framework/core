@@ -2,6 +2,7 @@
 namespace Dragon\Component\Config;
 
 use Dragon\Component\Directory\Directory;
+use Dragon\Component\FileSystem\FileSystem;
 
 class Builder
 {
@@ -14,24 +15,26 @@ class Builder
 
     public function __construct()
     {
+        $fs = new FileSystem;
+
         $this
-            ->addConfig( $this->getConfigFile( __DIR__ . "/Base.php" ) )
-            ->addConfig( $this->getConfigFile( Directory::DIRECTORY_CONFIG . "config.php" ) )
-            ->addConfig( $this->getConfigFile( Directory::DIRECTORY_CONFIG . "config-dev.php" ) )
-            ->addConfig( $this->getConfigFile( Directory::DIRECTORY_CONFIG . "config-test.php" ) )
+            ->addConfig( $fs->include( __DIR__ . "/Base.php" ) )
+            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config.php" ) )
+            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config-dev.php" ) )
+            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config-test.php" ) )
         ;
     }
 
-    /**
-     * Get the config file
-     *
-     * @param string $file
-     * @return void
-     */
-    private function getConfigFile(string $file): array
-    {
-        return file_exists($file) ? include $file : [];
-    }
+    // /**
+    //  * Get the config file
+    //  *
+    //  * @param string $file
+    //  * @return void
+    //  */
+    // private function getConfigFile(string $file): array
+    // {
+    //     return file_exists($file) ? include $file : [];
+    // }
 
     /**
      * Merge config array
