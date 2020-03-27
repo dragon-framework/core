@@ -6,9 +6,11 @@ use Exception;
 
 class Bridge extends Builder implements BridgeInterface
 {
-    public function getBridge(?string $key = null)
+    public function getBridge(?array $key = null)
     {
         $config = $this->config;
+
+        $key = $key[0];
 
         if (!empty($key))
         {

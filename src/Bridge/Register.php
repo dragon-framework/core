@@ -1,6 +1,6 @@
 <?php 
 
 return [
-    new \Dragon\Component\Config\Bridge,
-    new \Dragon\Component\Routing\Bridge,
+    'config' => new \Dragon\Component\Config\Bridge,
+    // 'routing' => new \Dragon\Component\Routing\Bridge,
 ];

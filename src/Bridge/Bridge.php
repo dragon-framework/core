@@ -3,14 +3,21 @@ namespace Dragon\Bridge;
 
 abstract class Bridge
 {
+    private $register;
+
+    public function __construct()
+    {
+        $this->register = include "Register.php";
+    }
+    
     /**
      * Config Bridge
      *
      * @param string|null $key
      * @return void
      */
-    public function config(?string $key = null)
+    public function __call($name, $arguments)
     {
-        return (new \Dragon\Component\Config\Bridge)->getBridge( $key );
+        return $this->register[$name]->getBridge( $arguments );
     }
 }
