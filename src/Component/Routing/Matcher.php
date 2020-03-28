@@ -14,20 +14,25 @@ class Matcher
 
     public function match()
     {
-        if ($this->match)
+        switch (true)
         {
-            $callableParts      = explode('#', $this->match['target']);
-			$controllerName     = ucfirst(str_replace('Controller', '', $callableParts[0]));
-			$methodName         = $callableParts[1];
-			$controllerFullName = 'App\\Controllers\\'.$controllerName.'Controller';
-			
-			$controller         = new $controllerFullName();
-			
-			call_user_func_array(array($controller, $methodName), $this->match['params']);
-        }
-        else
-        {
-            new Error404;
+            case null === $this->match && $_SERVER['REQUEST_URI'] == "/":
+                echo "Dragon Welcom page";
+                break;
+
+            case $this->match:
+                $callableParts      = explode('#', $this->match['target']);
+                $controllerName     = ucfirst(str_replace('Controller', '', $callableParts[0]));
+                $methodName         = $callableParts[1];
+                $controllerFullName = 'App\\Controllers\\'.$controllerName.'Controller';
+                
+                $controller         = new $controllerFullName();
+                
+                call_user_func_array(array($controller, $methodName), $this->match['params']);
+                break;
+
+            default:
+                new Error404;
         }
     }
 }
