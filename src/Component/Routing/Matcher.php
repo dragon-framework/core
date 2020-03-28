@@ -6,6 +6,6 @@ class Matcher
     public function __construct()
     {
        
-        dump( getApp()->routing->getRoutes(); ); 
+        dump( getApp()->routing->getRoutes() ); 
     }
 }
