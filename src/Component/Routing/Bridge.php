@@ -9,7 +9,7 @@ namespace Dragon\Component\Routing;
 
 use Dragon\Bridge\BridgeInterface;
 
-class Bridge extends Router implements BridgeInterface
+class Bridge extends Builder implements BridgeInterface
 {
     /**
      * The Brige method

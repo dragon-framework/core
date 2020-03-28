@@ -5,7 +5,7 @@ use AltoRouter;
 use Dragon\Component\Directory\Directory;
 use Dragon\Component\FileSystem\FileSystem;
 
-class Router
+class Builder
 {
     private $base;
     private $router;
