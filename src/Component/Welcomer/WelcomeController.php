@@ -1,12 +1,18 @@
 <?php
 namespace Dragon\Component\Welcomer;
 
-use Dragon\Component\Controller\AbstractController;
-
-class WelcomeController extends AbstractController
+class WelcomeController
 {
     public function welcome()
     {
-        echo "Welcome to the Dragon";
+        $loader = new \Twig\Loader\FilesystemLoader(__DIR__);
+        $twig = new \Twig\Environment($loader, [
+            // 'cache' => './path/to/compilation_cache',
+        ]);
+
+        echo $twig->render('welcome.html.twig', [
+            'version' => "0.0.1"
+        ]);
+
     }
 }

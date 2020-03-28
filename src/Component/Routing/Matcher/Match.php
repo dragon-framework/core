@@ -19,27 +19,24 @@ class Match
         {
             // No route for "/"
             case null == $this->match && $_SERVER['REQUEST_URI'] == "/":
-                $methodName     = "welcome";
-                $controller     = new WelcomeController();
-
-                // echo "Dragon Welcom page";
+                $controller             = new WelcomeController();
+                $method                 = "welcome";
+                $params                 = [];
                 break;
 
-            
             case $this->match:
-                $callableParts  = explode('#', $this->match['target']);
-                $controllerName = ucfirst(str_replace('Controller', '', $callableParts[0]));
-                $methodName     = $callableParts[1];
-
-                $controller     = 'App\\Controllers\\'.$controllerName.'Controller';
-                $controller     = new $controller();
-                
-            break;
+                $callableParts          = explode('#', $this->match['target']);
+                $controllerName         = ucfirst(str_replace('Controller', '', $callableParts[0]));
+                $controllerNamespace    = 'App\\Controllers\\'.$controllerName.'Controller';
+                $controller             = new $controllerNamespace();
+                $method                 = $callableParts[1] ?? "index";
+                $params                 = $this->match['params'];
+                break;
             
             default:
-            new Error404;
+                new Error404;
         }
         
-        call_user_func_array(array($controller, $methodName), $this->match['params']);
+        call_user_func_array(array($controller, $method), $params);
     }
 }
