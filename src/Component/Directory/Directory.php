@@ -14,6 +14,11 @@ class Directory
 	const DIRECTORY_SRC     = "./../src/";
 
 	/**
+	 * Path of the Project "src/Themes" directory
+	 */
+	const DIRECTORY_THEMES	= self::DIRECTORY_SRC."Themes/";
+
+	/**
 	 * Path of the Project "public" directory
 	 */
     const DIRECTORY_ROOT    = "./../public/";
