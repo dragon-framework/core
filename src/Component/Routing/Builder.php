@@ -72,17 +72,17 @@ class Builder
 
 
 
+    /**
+     * Get the router
+     *
+     * @return void
+     */
+    protected function _getRouter()
+    {
+        return $this->router;
+    }
 
 
-    // /**
-    //  * Get the router
-    //  *
-    //  * @return void
-    //  */
-    // protected function getRouter()
-    // {
-    //     return $this->router;
-    // }
 
     private function builder(array $routes, ?string $path=null, ?string $name=null)
     {

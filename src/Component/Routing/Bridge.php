@@ -4,6 +4,7 @@
  * 
  * $app->routing->getBase();
  * $app->routing->getRoutes();
+ * $app->routing->getRouter();
  */
 namespace Dragon\Component\Routing;
 
@@ -40,5 +41,15 @@ class Bridge extends Builder implements BridgeInterface
     public function getRoutes()
     {
         return $this->_getRoutes();
+    }
+
+    /**
+     * Get the router
+     *
+     * @return void
+     */
+    public function getRouter()
+    {
+        return $this->_getRouter();
     }
 }
