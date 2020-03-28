@@ -13,7 +13,8 @@ class Kernel extends Bridge
 
         // return "Run thE aPP";
 
-        new \Dragon\Component\Routing\Matcher;
+        $match = new \Dragon\Component\Routing\Matcher;
+        $match->match();
 
     }
 }
