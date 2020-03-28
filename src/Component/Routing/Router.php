@@ -84,26 +84,26 @@ class Router
     //     return $this->router;
     // }
 
-    private function builder(array $routes, ?string $name=null)
+    private function builder(array $routes, ?string $path=null, ?string $name=null)
     {
         $_routes = [];
 
         foreach ($routes as $route_name => $route)
         {
+            $method     = isset($route['methods']) ? implode("|", $route['methods']) : "GET";
+            $route_path = $path != null ? $path.$route['path'] : $route['path'];
+            $controller = $route['controller'];
+            $route_name = $name != null ? $name.":".$route_name : $route_name;
+
             if (isset($route['children']) && is_array($route['children']))
             {
-                $_routes = array_merge($_routes, $this->builder($route['children'], $route_name));
+                $_routes = array_merge($_routes, $this->builder($route['children'], $route_path, $route_name));
             }
             else
             {
-                $method     = isset($route['methods']) ? implode("|", $route['methods']) : "GET";
-                $path       = $route['path'];
-                $controller = $route['controller'];
-                $route_name = $name != null ? $name.":".$route_name : $route_name;
-
                 array_push($_routes, [
                     $method,
-                    $path,
+                    $route_path,
                     $controller,
                     $route_name
                 ]);

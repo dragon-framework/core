@@ -11,6 +11,7 @@ class Kernel extends Bridge
         // Session
         $this->config('session') ? session_start() : null;
 
-        return "Run thE aPP";
+        // return "Run thE aPP";
+
     }
 }
