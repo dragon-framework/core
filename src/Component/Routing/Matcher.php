@@ -3,8 +3,8 @@ namespace Dragon\Component\Routing;
 
 class Matcher 
 {
-    public function match()
+    public function __construct()
     {
-        # code...
+        
     }
 }
