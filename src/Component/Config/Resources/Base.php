@@ -1,5 +1,5 @@
 <?php 
-namespace Dragon\Component\Config;
+namespace Dragon\Component\Config\Resources;
 
 return [
     'env' => "prod",

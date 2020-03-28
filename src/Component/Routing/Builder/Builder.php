@@ -1,5 +1,5 @@
 <?php
-namespace Dragon\Component\Routing;
+namespace Dragon\Component\Routing\Builder;
 
 use AltoRouter;
 use Dragon\Component\Directory\Directory;

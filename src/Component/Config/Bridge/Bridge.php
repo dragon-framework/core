@@ -5,10 +5,11 @@
  * $app->config->getConfig();
  * $app->config->getConfig(title);
  */
-namespace Dragon\Component\Config;
+namespace Dragon\Component\Config\Bridge;
 
-use Dragon\Bridge\BridgeInterface;
 use Exception;
+use Dragon\Bridge\BridgeInterface;
+use Dragon\Component\Config\Builder\Builder;
 
 class Bridge extends Builder implements BridgeInterface
 {

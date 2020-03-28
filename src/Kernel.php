@@ -3,6 +3,7 @@
 namespace Dragon;
 
 use Dragon\Bridge\Bridge;
+use Dragon\Component\Routing\Matcher\Match;
 
 class Kernel extends Bridge
 {
@@ -11,10 +12,7 @@ class Kernel extends Bridge
         // Session
         $this->config('session') ? session_start() : null;
 
-        // return "Run thE aPP";
-
-        $match = new \Dragon\Component\Routing\Matcher;
+        $match = new Match;
         $match->match();
-
     }
 }

@@ -1,9 +1,9 @@
 <?php 
-namespace Dragon\Component\Routing;
+namespace Dragon\Component\Routing\Matcher;
 
 use Dragon\Component\Errors\Error404\Controller as Error404;
 
-class Matcher 
+class Match 
 {
     private $match;
 
@@ -16,10 +16,12 @@ class Matcher
     {
         switch (true)
         {
-            case null === $this->match && $_SERVER['REQUEST_URI'] == "/":
+            // No route for "/"
+            case null == $this->match && $_SERVER['REQUEST_URI'] == "/":
                 echo "Dragon Welcom page";
                 break;
 
+            
             case $this->match:
                 $callableParts      = explode('#', $this->match['target']);
                 $controllerName     = ucfirst(str_replace('Controller', '', $callableParts[0]));

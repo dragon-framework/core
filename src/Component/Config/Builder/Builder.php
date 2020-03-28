@@ -1,5 +1,5 @@
 <?php
-namespace Dragon\Component\Config;
+namespace Dragon\Component\Config\Builder;
 
 use Dragon\Component\Directory\Directory;
 use Dragon\Component\FileSystem\FileSystem;
