@@ -17,5 +17,31 @@ abstract class AbstractController
         ]);
 
         echo $twig->render($template, $params);
+        exit;
+    }
+
+    /**
+     * Make an HTTP Redirect
+     *
+     * @param string $uri
+     * @return void
+     */
+    public function redirect(string $uri)
+    {
+        header("location: $uri");
+        exit;
+    }
+
+    /**
+     * Make an HTTP Redirect by a route name
+     *
+     * @param string $routeName
+     * @param array $params
+     * @return void
+     */
+    public function redirectToRoute(string $routeName, array $params=[])
+    {
+        $uri = ""; // TODO: Make redirect to route
+        $this->redirect($uri);
     }
 }
