@@ -54,84 +54,57 @@ class Definition
     {
         $output = [];
 
-        foreach ($definitions as $route_name => $route_params)
+        foreach ($definitions as $_name => $_params)
         {
             // Route Name
             // --
 
+            if (null != $name)
+            {
+                $_name = $name.":".$_name;
+            }
+
+
             // Route path
             // --
+
+            $_path = $_params['path'];
+
+            if (null != $path)
+            {
+                $_path = $path.$_path;
+            }
+
 
             // Callable Parts
             // --
 
+            $_callableParts = $_params['controller'];
+
+
             // Allowed Methods
             // --
 
+            $_methods = "GET";
 
+            if (isset( $_params['methods'] ))
+            {
+                $_methods = implode("|", $_params['methods']);
+            }
 
+            // --
 
-
-
-            // // Route allowed methods
-
-
-            // $allowed_methods = isset( $route_params['methods'] ) 
-            //     ? implode("|",  $route_params['methods']) 
-            //     : "GET";
-                
-            // $path.= $route_params['path'];
-
-            // $callableParts = $route_params['controller'];
-
-            // $route_name = null != $name 
-            //     ? $name.":".$route_name 
-            //     : $route_name;
-
-            // if (isset($route['children']) && is_array($route['children']))
-            // {
-
-            // }
-            // else
-            // {
-
-            // }
-
-
+            if (isset( $_params['children'] ) && is_array( $_params['children'] ))
+            {
+                $output = array_merge($output, $this->format( $_params['children'], $_path, $_name ));
+            }
+            else
+            {
+                array_push($output, [$_methods, $_path, $_callableParts, $_name]);
+            }
         }
 
         return $output;
     }
 
-
 }
-
-
-        // private function builder(array $routes, ?string $path=null, ?string $name=null)
-        // {
-        //     $_routes = [];
-    
-        //     foreach ($routes as $route_name => $route)
-        //     {
-        //         $method     = isset($route['methods']) ? implode("|", $route['methods']) : "GET";
-        //         $route_path = $path != null ? $path.$route['path'] : $route['path'];
-        //         $controller = $route['controller'];
-        //         $route_name = $name != null ? $name.":".$route_name : $route_name;
-    
-        //         if (isset($route['children']) && is_array($route['children']))
-        //         {
-        //             $_routes = array_merge($_routes, $this->builder($route['children'], $route_path, $route_name));
-        //         }
-        //         else
-        //         {
-        //             array_push($_routes, [
-        //                 $method,
-        //                 $route_path,
-        //                 $controller,
-        //                 $route_name
-        //             ]);
-        //         }
-        //     }
-    
-        //     return $_routes;
-        // }
