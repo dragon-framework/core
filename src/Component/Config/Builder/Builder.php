@@ -23,7 +23,7 @@ class Builder
         $fs = new FileSystem;
 
         $this
-            ->addConfig( $fs->include( __DIR__ . "/Base.php" ) ?? [] )
+            ->addConfig( $fs->include( __DIR__ . "/../Resources/Config.php" ) ?? [] )
             ->addConfig( $fs->include( self::FILE_CONFIG ) ?? [])
             ->addConfig( $fs->include( self::FILE_CONFIG_DEV ) ?? [])
             ->addConfig( $fs->include( self::FILE_CONFIG_TEST ) ?? [])
