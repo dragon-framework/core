@@ -15,4 +15,17 @@ class Bridge extends Builder implements BridgeInterface
     {
         return $this;
     }
+
+    /**
+     * Magical Get
+     *
+     * @param string $key
+     * @return void
+     */
+    public function get(string $key)
+    {
+        $methodName = "get" . ucfirst(strtolower($key));
+
+        return $this->$methodName();
+    }
 }
