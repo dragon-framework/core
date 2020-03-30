@@ -9,35 +9,45 @@ class Definition
     /**
      * Databases input definition file
      */
-    const CONFIG_FILE = Directory::DIRECTORY_CONFIG . "databases.php";
+    const SOURCE = Directory::DIRECTORY_CONFIG . "databases.php";
 
     /**
      * Database final definition
      *
      * @var array
      */
-    private $definition = [];
+    private $definitions = [];
 
     public function __construct()
     {
         $this->set();
     }
 
-    private function set()
+    /**
+     * Database definition setter
+     *
+     * @return self
+     */
+    private function set(): self
     {
         $fs = new FileSystem;
 
-        if ($fs->isFile(self::CONFIG_FILE))
+        if ($fs->isFile(self::SOURCE))
         {
-            $this->definition = $this->validate( $fs->include( self::CONFIG_FILE ) ?? [] );
+            $this->definitions = $this->validate( $fs->include( self::SOURCE ) ?? [] );
         }
 
         return $this;
     }
 
+    /**
+     * Database definition getter
+     *
+     * @return array
+     */
     public function get(): array
     {
-        return $this->definition;
+        return $this->definitions;
     }
 
     private function validate(array $definitions)

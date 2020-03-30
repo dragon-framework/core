@@ -2,61 +2,78 @@
 namespace Dragon\Component\Routing\Builder;
 
 use AltoRouter;
-use Dragon\Component\Directory\Directory;
-use Dragon\Component\FileSystem\FileSystem;
+use Dragon\Component\Routing\Builder\Definition;
 
 class Builder
 {
+    /**
+     * Server Base
+     *
+     * @var string
+     */
     private $base;
+
+    /**
+     * Router engine
+     *
+     * @var \AltoRouter
+     */
     private $router;
-    private $routes = [];
+
+    /**
+     * Routes definition
+     *
+     * @var \Definition
+     */
+    private $definition;
+
+    // private $routes = [];
 
     public function __construct()
     {
-        $this->_setBase();
-        $this->_setRoutes();
-
+        $this->definition = new Definition;
         $this->router = new AltoRouter;
-        $this->router->setBasePath( $this->_getBase() );
-        $this->router->addRoutes( $this->routes );
+
+        $this->setBase();
+        $this->setRoutes();
+
+        $this->router->setBasePath( $this->getBase() );
+        $this->router->addRoutes( $this->getRoutes() );
         
     }
     
-
-
     /**
      * Set the route Base (ex: "/app/")
      *
      * @return self
      */
-    private function _setBase(): self
+    private function setBase(): self
     {
-        $this_base = empty($_SERVER['BASE']) ? '' : $_SERVER['BASE'];
+        $this->base = empty($_SERVER['BASE']) ? '' : $_SERVER['BASE'];
 
         return $this;
     }
 
     /**
      * Get the route base
+     * @bridgeAccess
      *
      * @return void
      */
-    protected function _getBase()
+    public function getBase()
     {
         return $this->base;
     }
-
-
 
     /**
      * Set routes from $routes definition
      *
      * @return self
      */
-    private function _setRoutes(): self
+    private function setRoutes(): self
     {
-        $this->routes = $this->builder( (new FileSystem)->include( Directory::DIRECTORY_CONFIG . "routes.php" ) );
-
+        $this->routes = $this->definition->get();
+        
         return $this;
     }
 
@@ -65,51 +82,18 @@ class Builder
      *
      * @return void
      */
-    protected function _getRoutes()
+    public function getRoutes()
     {
         return $this->routes;
     }
-
-
 
     /**
      * Get the router
      *
      * @return void
      */
-    protected function _getRouter()
+    public function getRouter()
     {
         return $this->router;
-    }
-
-
-
-    private function builder(array $routes, ?string $path=null, ?string $name=null)
-    {
-        $_routes = [];
-
-        foreach ($routes as $route_name => $route)
-        {
-            $method     = isset($route['methods']) ? implode("|", $route['methods']) : "GET";
-            $route_path = $path != null ? $path.$route['path'] : $route['path'];
-            $controller = $route['controller'];
-            $route_name = $name != null ? $name.":".$route_name : $route_name;
-
-            if (isset($route['children']) && is_array($route['children']))
-            {
-                $_routes = array_merge($_routes, $this->builder($route['children'], $route_path, $route_name));
-            }
-            else
-            {
-                array_push($_routes, [
-                    $method,
-                    $route_path,
-                    $controller,
-                    $route_name
-                ]);
-            }
-        }
-
-        return $_routes;
     }
 }

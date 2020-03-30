@@ -1,23 +1,30 @@
 <?php 
 namespace Dragon\Bridge;
 
+use Dragon\Component\FileSystem\FileSystem;
+
 abstract class Bridge
 {
+    /**
+     * The Bridge Register
+     *
+     * @var array
+     */
     private $register;
 
     public function __construct()
     {
-        $this->register = include "Register.php";
+        $fs = new FileSystem;
+        $this->register = $fs->include("Register.php");
     }
     
     /**
-     * Config Bridge
-     *
-     * @param string|null $key
+     * @param string $key
+     * @param array $arguments
      * @return void
      */
-    public function __call($name, $arguments)
+    public function __call(string $key, array $arguments)
     {
-        return $this->register[$name]->getBridge( $arguments );
+        return $this->register[ $key ]->getBridge( $arguments );
     }
 }
