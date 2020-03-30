@@ -1,10 +1,4 @@
 <?php
-/**
- * $app = new Dragon\Kernel;
- * 
- * $app->config->getConfig();
- * $app->config->getConfig(title);
- */
 namespace Dragon\Component\Config\Bridge;
 
 use Dragon\Bridge\BridgeInterface;
