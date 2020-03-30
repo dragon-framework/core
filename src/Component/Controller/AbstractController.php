@@ -2,9 +2,33 @@
 namespace Dragon\Component\Controller;
 
 use Dragon\Component\Directory\Directory;
+use Dragon\Component\Model\AbstractModel;
 
 abstract class AbstractController 
 {
+    private $controllerName;
+
+
+	public function __construct()
+	{
+		$this->setControllerClassName();
+		// $this->dbh = ConnectionModel::getDbh();
+    }
+
+    private function setControllerClassName(): self
+    {
+        $className = get_class($this);
+
+        // Retire le Model et les antislashes et converti en underscore_case (snake_case)
+        $class = str_replace('Controller', '', $className);
+        $class = explode('\\', $class);
+        $class = ltrim(preg_replace('/[A-Z]/', '_$0', end($class)), '_');
+        
+        $this->controllerName = $class;
+
+        return $this;
+    }
+
     protected function render(string $template, array $params=array())
     {
         $themes_dir     = Directory::DIRECTORY_THEMES;
@@ -66,5 +90,22 @@ abstract class AbstractController
         }
 
         return $url;
+    }
+
+
+
+    private function getModel()
+    {
+        $modelName = "\\App\\Models\\".$this->controllerName."Model";
+        return new $modelName;
+    }
+    
+    protected function find($id)
+    {
+        return $this->getModel()->find($id);
+    }
+    protected function findAll(array $options=AbstractModel::DEFAULT_FINDALL_OPTIONS)
+    {
+        return $this->getModel()->findAll($options);
     }
 }
