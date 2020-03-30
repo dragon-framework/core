@@ -44,4 +44,19 @@ abstract class AbstractController
         $uri = ""; // TODO: Make redirect to route
         $this->redirect($uri);
     }
+
+    public function generateUrl(string $routeName, array $params=[], bool $absolute=false)
+    {
+        $app    = getApp();
+        $router = $app->routing()->getRouter();
+        $url    = $router->generate($routeName);
+
+        if ($absolute)
+        {
+            $u = \League\Url\Url::createFromServer($_SERVER);
+            $url = $u->getBaseUrl() . $url;
+        }
+
+        return $url;
+    }
 }
