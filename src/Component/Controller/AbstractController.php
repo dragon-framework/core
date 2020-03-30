@@ -6,20 +6,23 @@ use Dragon\Component\Model\AbstractModel;
 
 abstract class AbstractController 
 {
+    /**
+     * The name of the child controller class
+     *
+     * @var string
+     */
     private $controllerName;
-
 
 	public function __construct()
 	{
 		$this->setControllerClassName();
-		// $this->dbh = ConnectionModel::getDbh();
     }
 
     private function setControllerClassName(): self
     {
+        // Get the child controller classname
         $className = get_class($this);
 
-        // Retire le Model et les antislashes et converti en underscore_case (snake_case)
         $class = str_replace('Controller', '', $className);
         $class = explode('\\', $class);
         $class = ltrim(preg_replace('/[A-Z]/', '_$0', end($class)), '_');
@@ -108,4 +111,5 @@ abstract class AbstractController
     {
         return $this->getModel()->findAll($options);
     }
+    // ...
 }
