@@ -5,7 +5,7 @@ use Dragon\Component\Directory\Directory;
 
 abstract class AbstractController 
 {
-    protected function render(string $template, array $params=[])
+    protected function render(string $template, array $params=array())
     {
         $themes_dir     = Directory::DIRECTORY_THEMES;
         $theme_name     = getApp()->config()->getConfig('theme');
@@ -39,17 +39,25 @@ abstract class AbstractController
      * @param array $params
      * @return void
      */
-    public function redirectToRoute(string $routeName, array $params=[])
+    public function redirectToRoute(string $routeName, array $params=array())
     {
         $uri = ""; // TODO: Make redirect to route
         $this->redirect($uri);
     }
 
-    public function generateUrl(string $routeName, array $params=[], bool $absolute=false)
+    /**
+     * Generate URL by the route name
+     *
+     * @param string $routeName
+     * @param array $params
+     * @param boolean $absolute
+     * @return void
+     */
+    public function generateUrl(string $routeName, array $params=array(), bool $absolute=false)
     {
         $app    = getApp();
         $router = $app->routing()->getRouter();
-        $url    = $router->generate($routeName);
+        $url    = $router->generate($routeName, $params);
 
         if ($absolute)
         {
