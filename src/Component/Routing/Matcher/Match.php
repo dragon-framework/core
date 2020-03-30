@@ -6,31 +6,44 @@ use Dragon\Component\Welcomer\WelcomeController;
 
 class Match 
 {
-    private $match;
+    /**
+     * Is it a match between the HTTP Request path and the router path
+     *
+     * @var boolean
+     */
+    private $isMatch = false;
+
+    /**
+     * The current mathed route
+     *
+     * @var void
+     */
+    private $route;
 
     public function __construct()
     {
-        $this->match = getApp()->routing()->getRouter()->match(); 
+        $this->route = getApp()->routing()->get('router')->match();
+        $this->isMatch = $this->route ? true : false;
     }
 
     public function match()
     {
         switch (true)
         {
-            // No route for "/"
-            case null == $this->match && $_SERVER['REQUEST_URI'] == "/":
+            // No route for the "/" path
+            case null == $this->isMatch && $_SERVER['REQUEST_URI'] == "/":
                 $controller             = new WelcomeController();
                 $method                 = "welcome";
                 $params                 = [];
                 break;
 
-            case $this->match:
-                $callableParts          = explode('#', $this->match['target']);
+            case $this->isMatch:
+                $callableParts          = explode('#', $this->route['target']);
                 $controllerName         = ucfirst(str_replace('Controller', '', $callableParts[0]));
                 $controllerNamespace    = 'App\\Controllers\\'.$controllerName.'Controller';
                 $controller             = new $controllerNamespace();
                 $method                 = $callableParts[1] ?? "index";
-                $params                 = $this->match['params'];
+                $params                 = $this->route['params'];
                 break;
             
             default:
