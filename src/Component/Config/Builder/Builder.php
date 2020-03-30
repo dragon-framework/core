@@ -9,7 +9,7 @@ class Builder
     const FILE_CONFIG       = Directory::DIRECTORY_CONFIG . "config.php";
     const FILE_CONFIG_DEV   = Directory::DIRECTORY_CONFIG . "config-dev.php";
     const FILE_CONFIG_TEST  = Directory::DIRECTORY_CONFIG . "config-test.php";
-    const FILE_DATABASE     = Directory::DIRECTORY_CONFIG . "database.php";
+    const FILE_DATABASE     = Directory::DIRECTORY_CONFIG . "databases.php";
 
     /**
      * The App config
@@ -27,8 +27,12 @@ class Builder
             ->addConfig( $fs->include( self::FILE_CONFIG ) ?? [])
             ->addConfig( $fs->include( self::FILE_CONFIG_DEV ) ?? [])
             ->addConfig( $fs->include( self::FILE_CONFIG_TEST ) ?? [])
-            ->addConfig( $fs->include( self::FILE_DATABASE ) ?? [])
         ;
+
+        if ($fs->isFile(self::FILE_DATABASE))
+        {
+            $this->addConfig( ['databases' => $fs->include( self::FILE_DATABASE ) ?? []]);
+        }
     }
 
     /**

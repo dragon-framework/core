@@ -24,5 +24,12 @@ class AbstractModel
      *
      * @var [type]
      */
-	protected $db;
+    protected $db;
+    
+
+	public function __construct()
+	{
+		// $this->setTableFromClassName();
+		// $this->dbh = ConnectionModel::getDbh();
+	}
 }
