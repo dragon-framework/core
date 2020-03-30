@@ -15,7 +15,7 @@ abstract class Bridge
     public function __construct()
     {
         $fs = new FileSystem;
-        $this->register = $fs->include("Register.php");
+        $this->register = $fs->include( __DIR__ . "/Register.php" );
     }
     
     /**
