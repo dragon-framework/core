@@ -6,6 +6,11 @@ use Dragon\Component\FileSystem\FileSystem;
 
 class Builder
 {
+    const FILE_CONFIG       = Directory::DIRECTORY_CONFIG . "config.php";
+    const FILE_CONFIG_DEV   = Directory::DIRECTORY_CONFIG . "config-dev.php";
+    const FILE_CONFIG_TEST  = Directory::DIRECTORY_CONFIG . "config-test.php";
+    const FILE_DATABASE     = Directory::DIRECTORY_CONFIG . "database.php";
+
     /**
      * The App config
      *
@@ -19,22 +24,12 @@ class Builder
 
         $this
             ->addConfig( $fs->include( __DIR__ . "/Base.php" ) ?? [] )
-            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config.php" ) ?? [] )
-            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config-dev.php" ) ?? [] )
-            ->addConfig( $fs->include( Directory::DIRECTORY_CONFIG . "config-test.php" ) ?? [] )
+            ->addConfig( $fs->include( self::FILE_CONFIG ) ?? [])
+            ->addConfig( $fs->include( self::FILE_CONFIG_DEV ) ?? [])
+            ->addConfig( $fs->include( self::FILE_CONFIG_TEST ) ?? [])
+            ->addConfig( $fs->include( self::FILE_DATABASE ) ?? [])
         ;
     }
-
-    // /**
-    //  * Get the config file
-    //  *
-    //  * @param string $file
-    //  * @return void
-    //  */
-    // private function getConfigFile(string $file): array
-    // {
-    //     return file_exists($file) ? include $file : [];
-    // }
 
     /**
      * Merge config array
