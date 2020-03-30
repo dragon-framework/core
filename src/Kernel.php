@@ -9,8 +9,10 @@ class Kernel extends Bridge
 {
     public function run()
     {
-        // Session
-        $this->config('session') ? session_start() : null;
+        if ($this->config()->get('session'))
+        {
+            session_start();
+        }
 
         $match = new Match;
         $match->match();

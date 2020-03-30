@@ -1,11 +1,4 @@
 <?php
-/**
- * $app = new Dragon\Kernel;
- * 
- * $app->routing->getBase();
- * $app->routing->getRoutes();
- * $app->routing->getRouter();
- */
 namespace Dragon\Component\Routing\Bridge;
 
 use Dragon\Bridge\BridgeInterface;
