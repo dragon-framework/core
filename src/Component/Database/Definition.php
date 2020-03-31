@@ -50,7 +50,13 @@ class Definition
         return $this->definitions;
     }
 
-    private function validate(array $definitions)
+    /**
+     * Database config validation
+     *
+     * @param array $definitions
+     * @return self
+     */
+    private function validate(array $definitions): self
     {
         foreach ($definitions as $database)
         {
