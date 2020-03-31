@@ -10,7 +10,7 @@ class WelcomeController
             // 'cache' => './path/to/compilation_cache',
         ]);
 
-        echo $twig->render('welcome.html.twig', [
+        echo $twig->render('welcome.html', [
             'version' => "0.0.1"
         ]);
 
