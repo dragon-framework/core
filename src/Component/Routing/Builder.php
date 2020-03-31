@@ -1,8 +1,8 @@
 <?php
-namespace Dragon\Component\Routing\Builder;
+namespace Dragon\Component\Routing;
 
 use AltoRouter;
-use Dragon\Component\Routing\Builder\Definition;
+use Dragon\Component\Routing\Definition;
 
 class Builder
 {

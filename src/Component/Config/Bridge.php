@@ -1,5 +1,5 @@
 <?php
-namespace Dragon\Component\Config\Bridge;
+namespace Dragon\Component\Config;
 
 use Dragon\Bridge\BridgeInterface;
 use Dragon\Component\Config\Builder\Builder;

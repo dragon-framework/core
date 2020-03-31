@@ -1,5 +1,5 @@
 <?php
-namespace Dragon\Component\Database\Connect;
+namespace Dragon\Component\Database;
 
 use Dragon\Component\Database\Definition;
 

@@ -1,8 +1,8 @@
 <?php
-namespace Dragon\Component\Database\Bridge;
+namespace Dragon\Component\Database;
 
 use Dragon\Bridge\BridgeInterface;
-use Dragon\Component\Database\Connect\Connect;
+use Dragon\Component\Database\Connect;
 
 class Bridge extends Connect implements BridgeInterface
 {

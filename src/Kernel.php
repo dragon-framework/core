@@ -3,7 +3,7 @@
 namespace Dragon;
 
 use Dragon\Bridge\Bridge;
-use Dragon\Component\Routing\Matcher\Match;
+use Dragon\Component\Routing\Matcher;
 
 class Kernel extends Bridge
 {
@@ -14,7 +14,7 @@ class Kernel extends Bridge
             session_start();
         }
 
-        $match = new Match;
+        $match = new Matcher;
         $match->match();
     }
 }

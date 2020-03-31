@@ -1,10 +1,10 @@
 <?php 
-namespace Dragon\Component\Routing\Matcher;
+namespace Dragon\Component\Routing;
 
 use Dragon\Component\Errors\Error404\Controller as Error404;
 use Dragon\Component\Welcomer\WelcomeController;
 
-class Match 
+class Matcher 
 {
     /**
      * Is it a match between the HTTP Request path and the router path
