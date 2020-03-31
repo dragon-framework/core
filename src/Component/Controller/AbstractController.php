@@ -2,7 +2,8 @@
 namespace Dragon\Component\Controller;
 
 use Dragon\Component\Directory\Directory;
-use Dragon\Component\Model\AbstractModel;
+// use Dragon\Component\Model\AbstractModel;
+use League\Uri\Uri;
 
 abstract class AbstractController 
 {
@@ -11,41 +12,72 @@ abstract class AbstractController
      *
      * @var string
      */
-    private $controllerName;
+    private $childControllerName;
 
 	public function __construct()
 	{
-		$this->setControllerClassName();
+		$this->setChildControllerName();
     }
 
-    private function setControllerClassName(): self
+    /**
+     * Set the name of the controller
+     * e.g.: BooksController -> Books
+     *
+     * @return self
+     */
+    private function setChildControllerName(): self
     {
         // Get the child controller classname
-        $className = get_class($this);
+        $childClassName = get_class($this);
 
-        $class = str_replace('Controller', '', $className);
-        $class = explode('\\', $class);
-        $class = ltrim(preg_replace('/[A-Z]/', '_$0', end($class)), '_');
+        $className = str_replace('Controller', '', $childClassName);
+        $className = explode('\\', $className);
+        $className = ltrim(preg_replace('/[A-Z]/', '_$0', end($className)), '_');
         
-        $this->controllerName = $class;
+        $this->childControllerName = $className;
 
         return $this;
     }
 
+
+    // Rendering methods
+    // --
+
+    /**
+     * Render an HTML view
+     *
+     * @param string $template file frome the themes directory
+     * @param array $params
+     * @return void
+     */
     protected function render(string $template, array $params=array())
     {
-        $themes_dir     = Directory::DIRECTORY_THEMES;
-        $theme_name     = getApp()->config()->getConfig('theme');
-        $theme_dir      = $themes_dir.$theme_name;
+        // Build the current Theme path
+        // --
 
-        $loader = new \Twig\Loader\FilesystemLoader($theme_dir);
+        $current_theme_name = getApp()->config()->get('theme');
+        $current_theme_dir = Directory::DIRECTORY_THEMES . $current_theme_name;
+
+
+        // Template Engine
+        // --
+
+        $loader = new \Twig\Loader\FilesystemLoader($current_theme_dir);
         $twig = new \Twig\Environment($loader, [
             // 'cache' => './path/to/compilation_cache',
         ]);
 
+
+        // Output the view
+        // --
+
         echo $twig->render($template, $params);
         exit;
     }
+
+
+    // Routes & URL
+    // --
 
     /**
      * Make an HTTP Redirect
@@ -66,9 +98,9 @@ abstract class AbstractController
      * @param array $params
      * @return void
      */
-    public function redirectToRoute(string $routeName, array $params=array())
+    public function redirectToRoute(string $routeName, array $params=array(), bool $absolute=false)
     {
-        $uri = ""; // TODO: Make redirect to route
+        $uri = $this->generateUrl($routeName, $params, $absolute);
         $this->redirect($uri);
     }
 
@@ -78,7 +110,7 @@ abstract class AbstractController
      * @param string $routeName
      * @param array $params
      * @param boolean $absolute
-     * @return void
+     * @return string
      */
     public function generateUrl(string $routeName, array $params=array(), bool $absolute=false)
     {
@@ -88,8 +120,11 @@ abstract class AbstractController
 
         if ($absolute)
         {
-            $u = \League\Url\Url::createFromServer($_SERVER);
-            $url = $u->getBaseUrl() . $url;
+            $u = Uri::createFromServer($_SERVER);
+            $base = json_decode(json_encode($u));
+            $base = substr($base, -1) == "/" ? substr($base, 0, -1) : null;
+
+            $url = $base . $url;
         }
 
         return $url;
@@ -97,17 +132,40 @@ abstract class AbstractController
 
 
 
+
+
+    
+    // Magic Queries
+    // --
+
+
+    // TODO: Get Model from CONTROLLER
+    // TODO: Get Model from CONTROLLER
+    // TODO: Get Model from CONTROLLER
+    // TODO: Get Model from CONTROLLER
+    // TODO: Get Model from CONTROLLER
+    // TODO: Get Model from CONTROLLER
+    // TODO: Get Model from CONTROLLER
+    // TODO: Get Model from CONTROLLER
+    // TODO: Get Model from CONTROLLER
+
     private function getModel()
     {
-        $modelName = "\\App\\Models\\".$this->controllerName."Model";
-        return new $modelName;
+        dump($this->childControllerName);
+
+        $className = "\\App\\Models\\".$this->childControllerName."Model";
+
+        dump(class_exists($className));
+
+        // return new $className;
     }
     
     protected function find($id)
     {
         return $this->getModel()->find($id);
     }
-    protected function findAll(array $options=AbstractModel::DEFAULT_FINDALL_OPTIONS)
+    // protected function findAll(array $options=AbstractModel::DEFAULT_FINDALL_OPTIONS)
+    protected function findAll(array $options=[])
     {
         return $this->getModel()->findAll($options);
     }
