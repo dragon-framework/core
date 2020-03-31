@@ -66,7 +66,7 @@ class Definition
                 $_database['pass']      = $database['pass'] ?? null;
                 $_database['charset']   = $database['charset'] ?? "utf8";
                 $_database['prefix']    = $database['prefix'] ?? null;
-                $_database['fetchMode'] = $database['fetch-mode'] ?? null;
+                $_database['fetchMode'] = $database['fetch-mode'] ?? null; // TODO: array, assoc, object
 
                 $this->definition[ $database['handle'] ] = $_database;
             }

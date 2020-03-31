@@ -131,43 +131,49 @@ abstract class AbstractController
     }
 
 
-
-
-
-    
-    // Magic Queries
+    // Model Queries
     // --
 
-
-    // TODO: Get Model from CONTROLLER
-    // TODO: Get Model from CONTROLLER
-    // TODO: Get Model from CONTROLLER
-    // TODO: Get Model from CONTROLLER
-    // TODO: Get Model from CONTROLLER
-    // TODO: Get Model from CONTROLLER
-    // TODO: Get Model from CONTROLLER
-    // TODO: Get Model from CONTROLLER
-    // TODO: Get Model from CONTROLLER
-
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     private function getModel()
     {
-        dump($this->childControllerName);
+        $modelName = $this->childControllerName;
+        $modelNamespace = "\\App\\Models\\".$modelName."Model";
 
-        $className = "\\App\\Models\\".$this->childControllerName."Model";
+        if (class_exists($modelNamespace))
+        {
+            return new $modelNamespace;
+        }
 
-        dump(class_exists($className));
-
-        // return new $className;
+        return false;
     }
     
+
+
     protected function find($id)
     {
-        return $this->getModel()->find($id);
+        $model = $this->getModel();
+
+        if ($model)
+        {
+            return $model->find($id);
+        }
     }
     // protected function findAll(array $options=AbstractModel::DEFAULT_FINDALL_OPTIONS)
     protected function findAll(array $options=[])
     {
-        return $this->getModel()->findAll($options);
+        $model = $this->getModel();
+
+        if ($model)
+        {
+            return $model->findAll($options);
+        }
     }
-    // ...
+    // TODO: insert
+    // TODO: update
+    // TODO: delete
 }

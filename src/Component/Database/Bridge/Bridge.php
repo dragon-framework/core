@@ -15,24 +15,4 @@ class Bridge extends Connect implements BridgeInterface
     {
         return $this;
     }
-
-    /**
-     * Get the config for all databases
-     *
-     * @return array
-     */
-    public function getDefinition(?string $key = null): array
-    {
-        return $this->definition->get();
-    }
-
-    public function getConnexions()
-    {
-        // return $this->_getConnexion($handle);
-    }
-
-    public function getConnexion(string $handle)
-    {
-        // return $this->_getConnexion($handle);
-    }
 }
