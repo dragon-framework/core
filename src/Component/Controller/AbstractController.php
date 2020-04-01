@@ -1,8 +1,9 @@
 <?php 
 namespace Dragon\Component\Controller;
 
-use Dragon\Component\Directory\Directory;
+// use Dragon\Component\Directory\Directory;
 use Dragon\Component\Database\Query;
+use Dragon\Component\Views\Render;
 use League\Uri\Uri;
 
 abstract class AbstractController 
@@ -59,26 +60,29 @@ abstract class AbstractController
      */
     protected function render(string $template, array $params=array())
     {
-        // Build the current Theme path
-        // --
+        // // Build the current Theme path
+        // // --
 
-        $current_theme_name = getApp()->config()->get('theme');
-        $current_theme_dir = Directory::DIRECTORY_THEMES . $current_theme_name;
-
-
-        // Template Engine
-        // --
-
-        $loader = new \Twig\Loader\FilesystemLoader($current_theme_dir);
-        $twig = new \Twig\Environment($loader, [
-            // 'cache' => './path/to/compilation_cache',
-        ]);
+        // $current_theme_name = getApp()->config()->get('theme');
+        // $current_theme_dir = Directory::DIRECTORY_THEMES . $current_theme_name;
 
 
-        // Output the view
-        // --
+        // // Template Engine
+        // // --
 
-        echo $twig->render($template, $params);
+        // $loader = new \Twig\Loader\FilesystemLoader($current_theme_dir);
+        // $twig = new \Twig\Environment($loader, [
+        //     // 'cache' => './path/to/compilation_cache',
+        // ]);
+
+
+        // // Output the view
+        // // --
+
+        $render = new Render;
+        echo $render->render($template, $params);
+
+        // echo $twig->render($template, $params);
         exit;
     }
 
