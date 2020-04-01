@@ -15,4 +15,15 @@ class Bridge extends Connect implements BridgeInterface
     {
         return $this;
     }
+
+    /**
+     * dbh getter
+     *
+     * @param string $key
+     * @return void
+     */
+    public function dbh(string $key)
+    {
+        return $this->getDbh($key);
+    }
 }

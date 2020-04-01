@@ -2,7 +2,7 @@
 namespace Dragon\Component\Controller;
 
 use Dragon\Component\Directory\Directory;
-// use Dragon\Component\Model\AbstractModel;
+use Dragon\Component\Database\Query;
 use League\Uri\Uri;
 
 abstract class AbstractController 
@@ -13,6 +13,13 @@ abstract class AbstractController
      * @var string
      */
     private $childControllerName;
+
+    /**
+     * Database Stetement Definition
+     *
+     * @var string
+     */
+    private $dsd = Query::STATEMENT;
 
 	public function __construct()
 	{
@@ -133,6 +140,17 @@ abstract class AbstractController
 
     // Model Queries
     // --
+    
+    /**
+     * Reset the Database Statement Definition
+     *
+     * @param string $dsd
+     * @return void
+     */
+    protected function setDatabaseStatementDefinition(string $dsd)
+    {
+        $this->dsd = $dsd;
+    }
 
     /**
      * Undocumented function
@@ -146,12 +164,15 @@ abstract class AbstractController
 
         if (class_exists($modelNamespace))
         {
-            return new $modelNamespace;
+            $model = new $modelNamespace;
+            $model->setDatabaseStatementDefinition( $this->dsd );
+
+            return $model;
         }
 
         return false;
     }
-    
+
 
 
     protected function find($id)
@@ -163,7 +184,7 @@ abstract class AbstractController
             return $model->find($id);
         }
     }
-    // protected function findAll(array $options=AbstractModel::DEFAULT_FINDALL_OPTIONS)
+
     protected function findAll(array $options=[])
     {
         $model = $this->getModel();

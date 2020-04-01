@@ -31,21 +31,31 @@ class Definition
     private function set(): self
     {
         $fs = new FileSystem;
-
+        
         if ($fs->isFile(self::SOURCE))
         {
             $this->definitions = $this->validate( $fs->include( self::SOURCE ) ?? [] );
         }
-
+        
         return $this;
     }
-
+    
     /**
      * Database definition getter
      *
      * @return array
      */
-    public function get(): array
+    public function get(string $key)
+    {
+        if (isset($this->definitions[$key]))
+        {
+            return $this->definitions[$key];
+        }
+        
+        return false;
+    }
+
+    public function getAll()
     {
         return $this->definitions;
     }
@@ -54,17 +64,19 @@ class Definition
      * Database config validation
      *
      * @param array $definitions
-     * @return self
+     * @return array
      */
-    private function validate(array $definitions): self
+    private function validate(array $definitions): array
     {
+        $output = [];
+
         foreach ($definitions as $database)
         {
-            if (isset($database['handle']))
+            if (isset($database['statement']))
             {
                 $_database = [];
 
-                $_database['type']      = $database['type'] ?? "mysql";
+                $_database['driver']    = $database['driver'] ?? "mysql";
                 $_database['host']      = $database['host'] ?? null;
                 $_database['port']      = $database['port'] ?? null;
                 $_database['schema']    = $database['schema'] ?? null;
@@ -74,11 +86,11 @@ class Definition
                 $_database['prefix']    = $database['prefix'] ?? null;
                 $_database['fetchMode'] = $database['fetch-mode'] ?? null; // TODO: array, assoc, object
 
-                $this->definition[ $database['handle'] ] = $_database;
+                $output[ $database['statement'] ] = $_database;
             }
         }
         
-        return $this;
+        return $output;
     }
 
 }
