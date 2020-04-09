@@ -50,7 +50,37 @@ class Render
                 {
                     $type       = strtolower($type[1]);
                     $className  = preg_replace("/\.php$/", null, $entry);
-                    $className  = "App\\Extension\\".$className;
+                    $className  = "App\\Extensions\\".$className;
+
+                    $extension  = new $className;
+
+                    foreach ($extension->getFunctions() as $method)
+                    {
+                        $callable = new \Twig\TwigFunction($method, [$extension, $method]);
+
+                        switch ($type)
+                        {
+                            case 'function':
+                                $this->engine->addFunction( $callable );
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        $dir = Directory::DIRECTORY_CORE_EXTENSIONS;
+
+        if (is_dir($dir))
+        {
+            foreach (\scandir( $dir ) as $entry)
+            {
+                if (preg_match(self::REGEX_EXTENSIONS_TYPE, $entry, $type))
+                {
+                    $type       = strtolower($type[1]);
+                    $className  = preg_replace("/\.php$/", null, $entry);
+                    $className  = "Dragon\\Component\\Extensions\\".$className;
 
                     $extension  = new $className;
 

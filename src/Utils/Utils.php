@@ -1,5 +1,7 @@
 <?php
 
+define('DS', DIRECTORY_SEPARATOR);
+
 foreach (scandir(__DIR__) as $item)
 {
     $util_dir   = $item;
