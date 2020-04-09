@@ -24,7 +24,7 @@ class Directory
 	 * Path of the Project "src/Extension" directory
 	 */
 	const DIRECTORY_APP_EXTENSIONS	= self::DIRECTORY_APP_SRC . "Extensions" . DS;
-	const DIRECTORY_CORE_EXTENSIONS	= self::DIRECTORY_APP_SRC . DS . ".." . DS . "Extensions" . DS;
+	const DIRECTORY_CORE_EXTENSIONS	= __DIR__ . DS . ".." . DS . "Extensions" . DS;
 
 	/**
 	 * Path of the Project "public" directory
