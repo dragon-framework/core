@@ -96,4 +96,27 @@ class Builder
     {
         return $this->router;
     }
+
+    /**
+     * Get the active route
+     *
+     * @return void
+     */
+    public function getActive()
+    {
+        return $this->router->match();
+    }
+
+    /**
+     * Is route active
+     *
+     * @param string $routeName
+     * @return boolean
+     */
+    public function isActive(string $routeName): bool
+    {
+        $route = $this->getActive();
+
+        return $routeName == $route['name'];
+    }
 }

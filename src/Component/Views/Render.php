@@ -40,7 +40,6 @@ class Render
 
     private function loadExtensions(): self
     {
-
         $dir = Directory::DIRECTORY_EXTENSIONS;
 
         if (is_dir($dir))
