@@ -42,62 +42,99 @@ class Render
     {
         $dir = Directory::DIRECTORY_APP_EXTENSIONS;
 
-        if (is_dir($dir))
+        foreach ([[
+            'dir' => Directory::DIRECTORY_APP_EXTENSIONS,
+            'namespace' => "App\\Extensions\\"
+        ],[
+            'dir' => Directory::DIRECTORY_CORE_EXTENSIONS,
+            'namespace' => "Dragon\\Component\\Extensions\\"
+        ]] as $extLoader)
         {
-            foreach (\scandir( $dir ) as $entry)
+
+            if (is_dir( $extLoader['dir'] ))
             {
-                if (preg_match(self::REGEX_EXTENSIONS_TYPE, $entry, $type))
+                foreach (\scandir( $extLoader['dir'] ) as $entry)
                 {
-                    $type       = strtolower($type[1]);
-                    $className  = preg_replace("/\.php$/", null, $entry);
-                    $className  = "App\\Extensions\\".$className;
-
-                    $extension  = new $className;
-
-                    foreach ($extension->getFunctions() as $method)
+                    if (preg_match(self::REGEX_EXTENSIONS_TYPE, $entry, $type))
                     {
-                        $callable = new \Twig\TwigFunction($method, [$extension, $method]);
-
-                        switch ($type)
+                        $type       = strtolower($type[1]);
+                        $className  = preg_replace("/\.php$/", null, $entry);
+                        $className  = $extLoader['namespace'].$className;
+    
+                        $extension  = new $className;
+    
+                        foreach ($extension->getFunctions() as $method)
                         {
-                            case 'function':
-                                $this->engine->addFunction( $callable );
-                                break;
+                            $callable = new \Twig\TwigFunction($method, [$extension, $method]);
+    
+                            switch ($type)
+                            {
+                                case 'function':
+                                    $this->engine->addFunction( $callable );
+                                    break;
+                            }
                         }
                     }
                 }
             }
         }
 
+        // if (is_dir($dir))
+        // {
+        //     foreach (\scandir( $dir ) as $entry)
+        //     {
+        //         if (preg_match(self::REGEX_EXTENSIONS_TYPE, $entry, $type))
+        //         {
+        //             $type       = strtolower($type[1]);
+        //             $className  = preg_replace("/\.php$/", null, $entry);
+        //             $className  = "App\\Extensions\\".$className;
 
-        $dir = Directory::DIRECTORY_CORE_EXTENSIONS;
+        //             $extension  = new $className;
 
-        if (is_dir($dir))
-        {
-            foreach (\scandir( $dir ) as $entry)
-            {
-                if (preg_match(self::REGEX_EXTENSIONS_TYPE, $entry, $type))
-                {
-                    $type       = strtolower($type[1]);
-                    $className  = preg_replace("/\.php$/", null, $entry);
-                    $className  = "Dragon\\Component\\Extensions\\".$className;
+        //             foreach ($extension->getFunctions() as $method)
+        //             {
+        //                 $callable = new \Twig\TwigFunction($method, [$extension, $method]);
 
-                    $extension  = new $className;
+        //                 switch ($type)
+        //                 {
+        //                     case 'function':
+        //                         $this->engine->addFunction( $callable );
+        //                         break;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
-                    foreach ($extension->getFunctions() as $method)
-                    {
-                        $callable = new \Twig\TwigFunction($method, [$extension, $method]);
 
-                        switch ($type)
-                        {
-                            case 'function':
-                                $this->engine->addFunction( $callable );
-                                break;
-                        }
-                    }
-                }
-            }
-        }
+        // $dir = Directory::DIRECTORY_CORE_EXTENSIONS;
+
+        // if (is_dir($dir))
+        // {
+        //     foreach (\scandir( $dir ) as $entry)
+        //     {
+        //         if (preg_match(self::REGEX_EXTENSIONS_TYPE, $entry, $type))
+        //         {
+        //             $type       = strtolower($type[1]);
+        //             $className  = preg_replace("/\.php$/", null, $entry);
+        //             $className  = "Dragon\\Component\\Extensions\\".$className;
+
+        //             $extension  = new $className;
+
+        //             foreach ($extension->getFunctions() as $method)
+        //             {
+        //                 $callable = new \Twig\TwigFunction($method, [$extension, $method]);
+
+        //                 switch ($type)
+        //                 {
+        //                     case 'function':
+        //                         $this->engine->addFunction( $callable );
+        //                         break;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
         return $this;
     }
