@@ -9,7 +9,7 @@ class Definition
     /**
      * Routes input definition file
      */
-    const SOURCE = Directory::DIRECTORY_CONFIG . "routes.php";
+    const SOURCE = Directory::DIRECTORY_APP_CONFIG . "routes.php";
 
     /**
      * Routes final definition

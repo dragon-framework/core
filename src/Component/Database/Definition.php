@@ -9,7 +9,7 @@ class Definition
     /**
      * Databases input definition file
      */
-    const SOURCE = Directory::DIRECTORY_CONFIG . "databases.php";
+    const SOURCE = Directory::DIRECTORY_APP_CONFIG . "databases.php";
 
     /**
      * Database final definition

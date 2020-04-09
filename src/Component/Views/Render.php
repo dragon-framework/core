@@ -20,7 +20,7 @@ class Render
     private function setThemeDirectory(): self
     {
         $theme_name = getApp()->config()->get('theme');
-        $theme_dir = Directory::DIRECTORY_THEMES . $theme_name;
+        $theme_dir = Directory::DIRECTORY_APP_THEMES . $theme_name;
 
         $this->themeDirectory = $theme_dir;
 
@@ -40,7 +40,7 @@ class Render
 
     private function loadExtensions(): self
     {
-        $dir = Directory::DIRECTORY_EXTENSIONS;
+        $dir = Directory::DIRECTORY_APP_EXTENSIONS;
 
         if (is_dir($dir))
         {

@@ -9,9 +9,9 @@ class Builder
     /**
      * Config filename
      */
-    const FILE_CONFIG       = Directory::DIRECTORY_CONFIG . "config.php";
-    const FILE_CONFIG_DEV   = Directory::DIRECTORY_CONFIG . "config-dev.php";
-    const FILE_CONFIG_TEST  = Directory::DIRECTORY_CONFIG . "config-test.php";
+    const FILE_CONFIG       = Directory::DIRECTORY_APP_CONFIG . "config.php";
+    const FILE_CONFIG_DEV   = Directory::DIRECTORY_APP_CONFIG . "config-dev.php";
+    const FILE_CONFIG_TEST  = Directory::DIRECTORY_APP_CONFIG . "config-test.php";
 
     /**
      * The App config
