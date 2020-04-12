@@ -27,8 +27,6 @@ class Builder
      */
     private $definition;
 
-    // private $routes = [];
-
     public function __construct()
     {
         $this->definition = new Definition;
@@ -39,7 +37,6 @@ class Builder
 
         $this->router->setBasePath( $this->getBase() );
         $this->router->addRoutes( $this->getRoutes() );
-        
     }
     
     /**

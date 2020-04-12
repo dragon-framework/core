@@ -92,6 +92,18 @@ class Definition
                 $_methods = implode("|", $_params['methods']);
             }
 
+
+            // Targets
+            // --
+
+            $_targets = ["public"];
+
+            if (isset( $_params['targets'] ))
+            {
+                $_targets = $_params['targets'];
+            }
+
+
             // --
 
             if (isset( $_params['children'] ) && is_array( $_params['children'] ))
@@ -100,7 +112,49 @@ class Definition
             }
             else
             {
-                array_push($output, [$_methods, $_path, $_callableParts, $_name]);
+                $_exp_callableParts = explode("#", $_callableParts);
+
+                if (in_array("public", $_targets, true))
+                {
+                    $_callableParts = implode("#", $_exp_callableParts);
+
+                    $route = [
+                        $_methods, 
+                        $_path, 
+                        $_callableParts, 
+                        $_name
+                    ];
+                    array_push($output, $route);
+                }
+
+                if (in_array("admin", $_targets, true))
+                {
+                    $_callableParts = implode("Admin#", $_exp_callableParts);
+
+                    $route = [
+                        $_methods, 
+                        "/admin".$_path, 
+                        $_callableParts, 
+                        "admin:".$_name
+                    ];
+
+                    array_push($output, $route);
+                }
+
+                if (in_array("api", $_targets, true))
+                {
+                    $_callableParts = implode("Api#", $_exp_callableParts);
+
+                    $route = [
+                        $_methods, 
+                        "/api".$_path, 
+                        $_callableParts, 
+                        "api:".$_name
+                    ];
+
+                    array_push($output, $route);
+                }
+
             }
         }
 

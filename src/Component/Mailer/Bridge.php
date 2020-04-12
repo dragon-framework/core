@@ -1,8 +1,8 @@
 <?php
-namespace Dragon\Component\Routing;
+namespace Dragon\Component\Mailer;
 
 use Dragon\Bridge\BridgeInterface;
-use Dragon\Component\Routing\Builder;
+use Dragon\Component\Mailer\Builder;
 
 class Bridge extends Builder implements BridgeInterface
 {
