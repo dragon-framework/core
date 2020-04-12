@@ -27,9 +27,9 @@ class RoutesFunction
      * @param array $params
      * @return string
      */
-    public function url(string $name, array $params=[]): string
+    public function url(string $name, array $params=[], bool $absolute=false): string
     {
-        return $this->router->generate($name, $params);
+        return $this->routing->generateUrl($name, $params, $absolute);
     }
 
     /**

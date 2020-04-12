@@ -2,6 +2,7 @@
 namespace Dragon\Component\Routing;
 
 use AltoRouter;
+use Dragon\Component\Request\Request;
 use Dragon\Component\Routing\Definition;
 
 class Builder
@@ -27,10 +28,18 @@ class Builder
      */
     private $definition;
 
+    /**
+     * Undocumented variable
+     *
+     * @var Request
+     */
+    private $request;
+
     public function __construct()
     {
         $this->definition = new Definition;
         $this->router = new AltoRouter;
+        $this->request = new Request;
 
         $this->setBase();
         $this->setRoutes();
@@ -115,5 +124,19 @@ class Builder
         $route = $this->getActive();
 
         return $routeName == $route['name'];
+    }
+
+    public function generateUrl(string $name, array $params=[], bool $absolute=false): string
+    {
+        $url = "";
+        
+        if ($absolute)
+        {
+            $url.= $this->request->get('base');
+        }
+
+        $url.= $this->router->generate($name, $params);
+
+        return $url;
     }
 }

@@ -3,6 +3,7 @@ namespace Dragon\Component\Controller;
 
 // use Dragon\Component\Directory\Directory;
 use Dragon\Component\Database\Query;
+use Dragon\Component\Request\Request;
 use Dragon\Component\Views\Render;
 use League\Uri\Uri;
 
@@ -65,6 +66,15 @@ abstract class AbstractController
         echo $render->render($template, $params);
         
         exit;
+    }
+
+
+    // Request
+    // --
+
+    public function request()
+    {
+        return new Request;
     }
 
 
