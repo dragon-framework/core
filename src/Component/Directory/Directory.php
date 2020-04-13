@@ -16,9 +16,9 @@ class Directory
 	const DIRECTORY_APP_SRC		= self::DIRECTORY_APP_BASE . "src" . DS;
 
 	/**
-	 * Path of the Project "src/Themes" directory
+	 * Path of the Project "src/Templates" directory
 	 */
-	const DIRECTORY_APP_THEMES	= self::DIRECTORY_APP_SRC . "Themes" . DS;
+	const DIRECTORY_APP_TEMPLATES	= self::DIRECTORY_APP_SRC . "Templates" . DS;
 
 	/**
 	 * Path of the Project "src/Extension" directory

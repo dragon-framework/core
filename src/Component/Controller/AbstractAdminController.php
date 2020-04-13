@@ -15,6 +15,7 @@ abstract class AbstractAdminController extends AbstractController
     {
         $routesExceptions = [
             "admin:security:login",
+            "admin:security:pending",
             "admin:security:logout",
         ];
 

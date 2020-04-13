@@ -3,11 +3,21 @@ namespace Dragon\Component\Request;
 
 class Request 
 {
-    public function get(string $key)
+    private $data;
+
+    public function __call(string $key, array $arguments)
     {
         $methodName = "get" . ucfirst(strtolower($key));
 
         return $this->$methodName();
+    }
+
+    public function get(string $key)
+    {
+        $data = $this->data[$key] ?? null;
+        $data = htmlspecialchars($data);
+
+        return $data;
     }
 
     
@@ -58,9 +68,26 @@ class Request
         return $data[0];
     }
 
-    private function getQuery(): ?string
+
+    // Data
+    // --
+
+    private function getQuery(): ?self
     {
-        return $_SERVER['QUERY_STRING'] ?? null;
+        $this->data = $_GET;
+
+        unset($_GET);
+        
+        return $this;
+    }
+
+    private function getRequest(): self
+    {
+        $this->data = $_POST;
+
+        unset($_POST);
+
+        return $this;
     }
 
 
