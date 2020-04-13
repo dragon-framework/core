@@ -9,6 +9,7 @@ class Directory
 	 * Path of the Project "config" directory
 	 */
 	const DIRECTORY_APP_CONFIG	= self::DIRECTORY_APP_BASE . "config" . DS ;
+	const DIRECTORY_CORE_CONFIG	= __DIR__ . DS . ".." . DS . "Config" . DS . "Resources" . DS;
 
 	/**
 	 * Path of the Project "src" directory

@@ -6,12 +6,19 @@ use Dragon\Component\FileSystem\FileSystem;
 
 class Builder
 {
+    const CONFIG_TITLE              = "title";
+    const CONFIG_ENVIRONNEMENT      = "environnement";
+    const CONFIG_SESSION            = "session";
+    const DEV_CONFIG_HOSTS          = "dev-hosts";
+
     /**
      * Config filename
      */
-    const FILE_CONFIG       = Directory::DIRECTORY_APP_CONFIG . "config.php";
-    const FILE_CONFIG_DEV   = Directory::DIRECTORY_APP_CONFIG . "config-dev.php";
-    const FILE_CONFIG_TEST  = Directory::DIRECTORY_APP_CONFIG . "config-test.php";
+    const APP_CONFIG        = Directory::DIRECTORY_APP_CONFIG . "config.php";
+    const CORE_CONFIG       = Directory::DIRECTORY_CORE_CONFIG . "Config.php";
+    const APP_CONFIG_DEV    = Directory::DIRECTORY_APP_CONFIG . "config-dev.php";
+    const CORE_CONFIG_DEV   = Directory::DIRECTORY_CORE_CONFIG . "Dev.php";
+    const APP_CONFIG_TEST   = Directory::DIRECTORY_APP_CONFIG . "config-test.php";
 
     /**
      * The App config
@@ -19,6 +26,8 @@ class Builder
      * @var array
      */
     private $conf = [];
+    private $configDev = [];
+    private $configTest = [];
 
     public function __construct()
     {
@@ -34,19 +43,20 @@ class Builder
     {
         $fs = new FileSystem;
 
+        // Get Global config
         $this
-            // Default Dragon config
-            ->merge( $fs->include( __DIR__ . "/../Resources/Config.php" ) ?? [] )
-
-            // Custom config
-            ->merge( $fs->include( self::FILE_CONFIG ) ?? [] )
+            ->merge( $fs->include( self::CORE_CONFIG ) ?? [] )
+            ->merge( $fs->include( self::APP_CONFIG ) ?? [] )
         ;
 
-        // DevEnv config
-        $this->merge( $fs->include( self::FILE_CONFIG_DEV ) ?? []);
+        // Get Dev config
+        $this
+            ->mergeDev( $fs->include( self::CORE_CONFIG_DEV ) ?? [] )
+            ->mergeDev( $fs->include( self::APP_CONFIG_DEV ) ?? [] )
+        ;
 
         // TestEnv Config
-        $this->merge( $fs->include( self::FILE_CONFIG_TEST ) ?? []);
+        // $this->merge( $fs->include( self::APP_CONFIG_TEST ) ?? []);
 
         return $this;
     }
@@ -63,6 +73,24 @@ class Builder
         {
             $this->conf = array_merge( $this->conf, $input );
         }
+
+        return $this;
+    }
+    private function mergeDev(array $input): self
+    {
+        foreach ($this->configDev as $key => $value)
+        {
+            foreach ($input as $newKey => $newValue)
+            {
+                if ($newKey == $key && is_array($value) && is_array($newValue))
+                {
+                    $this->configDev[$key] = array_merge($this->configDev[$key], $newValue);
+                    unset($input[$newKey]);
+                }
+            }
+        }
+
+        $this->configDev = array_merge( $this->configDev, $input );
 
         return $this;
     }
