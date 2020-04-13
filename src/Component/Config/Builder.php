@@ -38,15 +38,15 @@ class Builder
             // Default Dragon config
             ->merge( $fs->include( __DIR__ . "/../Resources/Config.php" ) ?? [] )
 
-            // // Custom config
+            // Custom config
             ->merge( $fs->include( self::FILE_CONFIG ) ?? [] )
-
-            // DevEnv config
-            ->merge( $fs->include( self::FILE_CONFIG_DEV ) ?? [])
-
-            // TestEnv Config
-            ->merge( $fs->include( self::FILE_CONFIG_TEST ) ?? [])
         ;
+
+        // DevEnv config
+        $this->merge( $fs->include( self::FILE_CONFIG_DEV ) ?? []);
+
+        // TestEnv Config
+        $this->merge( $fs->include( self::FILE_CONFIG_TEST ) ?? []);
 
         return $this;
     }

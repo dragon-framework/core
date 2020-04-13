@@ -22,7 +22,8 @@ class Matcher
 
     public function __construct()
     {
-        $this->route = getApp()->routing()->get('router')->match();
+        $app = getApp();
+        $this->route = $app->routing()->get('router')->match();
         $this->isMatch = $this->route ? true : false;
     }
 
