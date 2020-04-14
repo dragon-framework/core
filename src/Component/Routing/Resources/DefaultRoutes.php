@@ -1,6 +1,10 @@
 <?php 
 return [
 
+    /**
+     * Documentation
+     */
+
     '_doc' => [
         'path'          => "/documentation",
         'children'      => [
@@ -17,6 +21,18 @@ return [
                 // 'targets'       => ["public"]
             ]
         ]
+    ],
+
+
+    /**
+     * Security
+     */
+
+    '_login' => [
+        'path'          => "/login",
+        'controller'    => "Dragon\\Component\\Security\\Controller#login",
+        'methods'       => ["GET", "POST"],
+        // 'targets'       => ["admin"],
     ],
 
 ];

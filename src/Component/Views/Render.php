@@ -12,24 +12,12 @@ class Render
 
     public function __construct()
     {
-        // $this->setThemeDirectory();
         $this->setEngine();
         $this->loadExtensions();
     }
 
-    // private function setThemeDirectory(): self
-    // {
-    //     $theme_name = getApp()->config()->get('theme');
-    //     $theme_dir = Directory::DIRECTORY_APP_TEMPLATES . $theme_name;
-
-    //     $this->themeDirectory = $theme_dir;
-
-    //     return $this;
-    // }
-
     private function setEngine(): self
     {
-        // $loader = new \Twig\Loader\FilesystemLoader( $this->themeDirectory );
         $loader = new \Twig\Loader\FilesystemLoader( Directory::DIRECTORY_APP_TEMPLATES );
 
         $this->engine = new \Twig\Environment($loader, [

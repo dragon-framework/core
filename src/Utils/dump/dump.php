@@ -9,3 +9,12 @@ if (!function_exists('dump'))
         echo '</pre>';
     }
 }
+
+if (!function_exists('dd'))
+{
+    function dd($data)
+    {
+        dump($data);
+        die;
+    }
+}

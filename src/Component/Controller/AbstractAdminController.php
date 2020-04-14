@@ -7,16 +7,16 @@ abstract class AbstractAdminController extends AbstractController
     {
         if (!$this->isGranted())
         {
-            $this->redirectToRoute("admin:security:login");
+            $this->redirectToRoute("_login");
         }
     }
 
     private function isGranted()
     {
         $routesExceptions = [
-            "admin:security:login",
-            "admin:security:pending",
-            "admin:security:logout",
+            "_login",
+            "_pending",
+            "_logout",
         ];
 
         $activeRoute = getApp()->routing()->get('active');

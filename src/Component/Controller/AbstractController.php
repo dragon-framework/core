@@ -65,7 +65,7 @@ abstract class AbstractController
 
         echo $render->render($template, $params);
         
-        exit;
+        // exit;
     }
 
 
