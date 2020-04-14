@@ -9,7 +9,8 @@ class Definition
     /**
      * Routes input definition file
      */
-    const SOURCE = Directory::DIRECTORY_APP_CONFIG . "routes.php";
+    const APP_SOURCE = Directory::DIRECTORY_APP_CONFIG . "routes.php";
+    const CORE_SOURCE = __DIR__ . DS . "Resources" . DS . "DefaultRoutes.php";
 
     /**
      * Routes final definition
@@ -32,10 +33,9 @@ class Definition
     {
         $fs = new FileSystem;
 
-        if ($fs->isFile(self::SOURCE))
-        {
-            $this->definitions = $this->format( $fs->include( self::SOURCE ) ?? [] );
-        }
+        $this->definitions = array_merge($this->definitions, $this->format( $fs->include( self::APP_SOURCE ) ?? [] ));
+        $this->definitions = array_merge($this->definitions, $this->format( $fs->include( self::CORE_SOURCE ) ?? [] ));
+
 
         return $this;
     }
@@ -112,11 +112,26 @@ class Definition
             }
             else
             {
-                $_exp_callableParts = explode("#", $_callableParts);
+                $_callableParts_separator = "#";
+
+                list($_class, $method) = explode($_callableParts_separator, $_callableParts);
+                $_class = ucfirst(preg_replace("/Controller$/", '', $_class));
+                $_class.= 'Controller';
 
                 if (in_array("public", $_targets, true))
                 {
-                    $_callableParts = implode("#", $_exp_callableParts);
+                    $namespace = "App\\Controllers\\FrontOffice\\";
+                    if (!class_exists($_class))
+                    {
+                        $class = $namespace.$_class;
+                    }
+                    else
+                    {
+                        $class = $_class;
+                    }
+
+                    $glue = $_callableParts_separator;
+                    $_callableParts = implode($glue, [$class, $method]);
 
                     $route = [
                         $_methods, 
@@ -129,7 +144,18 @@ class Definition
 
                 if (in_array("admin", $_targets, true))
                 {
-                    $_callableParts = implode("Admin#", $_exp_callableParts);
+                    $namespace = "App\\Controllers\\BackOffice\\";
+                    if (!class_exists($_class))
+                    {
+                        $class = $namespace.$_class;
+                    }
+                    else
+                    {
+                        $class = $_class;
+                    }
+
+                    $glue = $_callableParts_separator;
+                    $_callableParts = implode($glue, [$class, $method]);
 
                     $route = [
                         $_methods, 
@@ -143,7 +169,18 @@ class Definition
 
                 if (in_array("api", $_targets, true))
                 {
-                    $_callableParts = implode("Api#", $_exp_callableParts);
+                    $namespace = "App\\Controllers\\Api\\";
+                    if (!class_exists($_class))
+                    {
+                        $class = $namespace.$_class;
+                    }
+                    else
+                    {
+                        $class = $_class;
+                    }
+
+                    $glue = $_callableParts_separator;
+                    $_callableParts = implode($glue, [$class, $method]);
 
                     $route = [
                         $_methods, 

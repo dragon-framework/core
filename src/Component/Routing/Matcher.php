@@ -40,8 +40,11 @@ class Matcher
 
             case $this->isMatch:
                 $callableParts          = explode('#', $this->route['target']);
-                $controllerName         = ucfirst(str_replace('Controller', '', $callableParts[0]));
-                $controllerNamespace    = 'App\\Controllers\\'.$controllerName.'Controller';
+                // $controllerName         = ucfirst(str_replace('Controller', '', $callableParts[0]));
+                $controllerName         = $callableParts[0];
+                // $controllerNamespace    = 'App\\Controllers\\'.$controllerName.'Controller';
+                // $controllerNamespace    = $controllerName.'Controller';
+                $controllerNamespace    = $controllerName;
                 $controller             = new $controllerNamespace();
                 $method                 = $callableParts[1] ?? "index";
                 $params                 = $this->route['params'];
