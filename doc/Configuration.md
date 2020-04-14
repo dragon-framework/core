@@ -19,6 +19,7 @@
 |Key|Type|Default|Description|
 |--|--|--|--|
 |`dev-hosts`|`array`|["127.0.0.1", "localhost"]|Dev hosts definition to switch automaticaly to "dev" execution mode.|
+|`dev-adex`|`bool`|true|Auto Define Environment Execution.|
 
 ## Database Configuration {#database-configuration}
 

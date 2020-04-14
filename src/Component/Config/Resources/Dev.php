@@ -15,7 +15,7 @@ return [
     ],
     
     /**
-     * Default DevHosts
+     * Default Auto Define Environment Execution
      * 
      * @var bool Default: true
      */
