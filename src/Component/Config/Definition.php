@@ -7,6 +7,7 @@ class Definition
     const CONFIG_TITLE          = "title";
     const CONFIG_ENVIRONMENT    = "environment";
     const CONFIG_SESSION        = "session";
+    const CONFIG_AUTHENTICATION = "session";
 
     // Dev config keys
     const DEV_CONFIG_HOSTS      = "dev-hosts";
