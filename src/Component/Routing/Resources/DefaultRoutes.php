@@ -6,13 +6,13 @@ return [
         'children'      => [
             'index'     => [
                 'path'          => "",
-                'controller'    => "Dragon\\Component\\Controller\\DocController#index",
+                'controller'    => "Dragon\\Component\\Documentation\\Controller#index",
                 'methods'       => ["GET"],
                 // 'targets'       => ["public"]
             ],
             'section'   => [
                 'path'          => "/[:section]/[:md5]",
-                'controller'    => "Dragon\\Component\\Controller\\DocController#section",
+                'controller'    => "Dragon\\Component\\Documentation\\Controller#section",
                 'methods'       => ["GET"],
                 // 'targets'       => ["public"]
             ]

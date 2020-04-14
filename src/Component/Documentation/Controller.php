@@ -5,7 +5,7 @@ use Dragon\Component\Controller\AbstractController;
 use Dragon\Component\Directory\Directory;
 use Michelf\MarkdownExtra;
 
-class DocController extends AbstractController
+class Controller extends AbstractController
 {
     private function getSections(): array
     {
