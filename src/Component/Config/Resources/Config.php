@@ -1,6 +1,7 @@
 <?php 
 
-use Dragon\Component\Config\Builder;
+use Dragon\Component\Config\Definition;
+use Dragon\Component\Environment\Definition as EnvironmentDefinition;
 
 return [
 
@@ -9,20 +10,20 @@ return [
      * 
      * @var string
      */
-    Builder::CONFIG_TITLE => "",
+    Definition::CONFIG_TITLE => "",
 
     /**
      * Default execution environnement
      * 
      * @var string
      */
-    Builder::CONFIG_ENVIRONNEMENT => "prod",
+    Definition::CONFIG_ENVIRONMENT => EnvironmentDefinition::EXECUTION_MODE_PROD,
     
     /**
      * Default Session
      * 
      * @var bool
      */
-    Builder::CONFIG_SESSION => true,
+    Definition::CONFIG_SESSION => true,
 
 ];

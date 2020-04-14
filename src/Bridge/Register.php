@@ -5,5 +5,4 @@ return [
     'database'  => new \Dragon\Component\Database\Bridge,
     'routing'   => new \Dragon\Component\Routing\Bridge,
     'mailer'    => new \Dragon\Component\Mailer\Bridge,
-    // 'env'       => new \Dragon\Component\Environnement\Bridge,
 ];

@@ -1,17 +1,24 @@
 <?php 
 
-use Dragon\Component\Config\Builder;
+use Dragon\Component\Config\Definition;
 
 return [
     
     /**
      * Default DevHosts
      * 
-     * @var array
+     * @var array<string>
      */
-    Builder::DEV_CONFIG_HOSTS => [
+    Definition::DEV_CONFIG_HOSTS => [
         "127.0.0.1",
         "localhost",
     ],
+    
+    /**
+     * Default DevHosts
+     * 
+     * @var bool Default: true
+     */
+    Definition::DEV_CONFIG_ADEX => true,
 
 ];

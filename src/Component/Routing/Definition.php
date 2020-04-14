@@ -68,7 +68,7 @@ class Definition
             // Route path
             // --
 
-            $_path = $_params['path'];
+            $_path = $_params['path'] ?? null;
 
             if (null != $path)
             {
@@ -79,7 +79,7 @@ class Definition
             // Callable Parts
             // --
 
-            $_callableParts = $_params['controller'];
+            $_callableParts = $_params['controller'] ?? null;
 
 
             // Allowed Methods
