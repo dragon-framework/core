@@ -12,8 +12,7 @@ class Kernel extends Bridge
     {
         parent::__construct();
 
-        dump( $this->config()->get('environment') );
-
+        
         // Error Reporting
         // --
 
