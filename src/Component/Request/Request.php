@@ -74,7 +74,16 @@ class Request
 
     private function getQuery(): ?self
     {
+        // Get data from $_GET
         $this->data = $_GET;
+
+        // Get data from active route params
+        $route = getApp()->routing()->getActive();
+
+        if (isset($route['params']))
+        {
+            $this->data = array_merge($this->data, $route['params']);
+        }
 
         unset($_GET);
         

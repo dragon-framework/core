@@ -2,10 +2,15 @@
 namespace Dragon\Component\Security;
 
 use Dragon\Component\FileSystem\FileSystem;
+use Dragon\Component\Directory\Directory;
 
 class Definition
 {
     const DEFAULTS_RESOURCES = __DIR__ . DS . "Defaults.php";
+
+    const STRATEGY_PASSWORD = "password";
+    const STRATEGY_EMAIL    = "email";
+    const STRATEGY_2FA      = "2fa";
 
     /**
      * Security definitions
@@ -38,7 +43,8 @@ class Definition
         $this->definitions = array_merge($this->definitions, $this->fs->include( self::DEFAULTS_RESOURCES ) ?? []);
 
         // Get app definition
-
+        $this->definitions = array_merge($this->definitions, $this->fs->include( Directory::DIRECTORY_APP_CONFIG."security.php" ) ?? []);
+        
         return $this;
     }
 

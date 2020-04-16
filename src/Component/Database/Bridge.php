@@ -2,9 +2,9 @@
 namespace Dragon\Component\Database;
 
 use Dragon\Bridge\BridgeInterface;
-use Dragon\Component\Database\Connect;
+use Dragon\Component\Database\Builder;
 
-class Bridge extends Connect implements BridgeInterface
+class Bridge extends Builder implements BridgeInterface
 {
     /**
      * The Brige method
@@ -17,13 +17,28 @@ class Bridge extends Connect implements BridgeInterface
     }
 
     /**
-     * dbh getter
+     * return the database Handle
      *
-     * @param string $key
+     * @param string $statement The statement name
      * @return void
      */
-    public function dbh(string $key)
+    public function dbh(string $statement)
     {
-        return $this->getDbh($key);
+        return $this->getDbh($statement);
+    }
+
+    /**
+     * Return true if config has statement
+     *
+     * @return boolean
+     */
+    public function hasStatement(): bool
+    {
+        return $this->statements->hasStatement();
+    }
+
+    public function isValidStatement(string $statementId)
+    {
+        return $this->statements->isValid($statementId);
     }
 }

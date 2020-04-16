@@ -3,6 +3,8 @@ namespace Dragon\Component\Controller;
 
 // use Dragon\Component\Directory\Directory;
 use Dragon\Component\Database\Query;
+use Dragon\Component\Flash\FlashBag;
+use Dragon\Component\Flash\FlashData;
 use Dragon\Component\Request\Request;
 use Dragon\Component\Views\Render;
 use League\Uri\Uri;
@@ -14,18 +16,34 @@ abstract class AbstractController
      *
      * @var string
      */
-    private $childControllerName;
+    private $controllerChildName;
 
     /**
-     * Database Stetement Definition
+     * Default databse statement name
      *
      * @var string
      */
-    private $dsd = Query::STATEMENT;
+    private $statetmentId = Query::STATEMENT;
+
+    /**
+     * FlashBag instance
+     *
+     * @var FlashBag
+     */
+    private $flashbag;
+
+    /**
+     * FlashData instance
+     *
+     * @var FlashData
+     */
+    private $flashdata;
 
 	public function __construct()
 	{
-		$this->setChildControllerName();
+        $this->setControllerChildName();
+        $this->flashbag = new FlashBag;
+        $this->flashdata = new FlashData;
     }
 
     /**
@@ -34,7 +52,7 @@ abstract class AbstractController
      *
      * @return self
      */
-    private function setChildControllerName(): self
+    private function setControllerChildName(): self
     {
         // Get the child controller classname
         $childClassName = get_class($this);
@@ -43,7 +61,7 @@ abstract class AbstractController
         $className = explode('\\', $className);
         $className = ltrim(preg_replace('/[A-Z]/', '_$0', end($className)), '_');
         
-        $this->childControllerName = $className;
+        $this->controllerChildName = $className;
 
         return $this;
     }
@@ -53,7 +71,7 @@ abstract class AbstractController
     // --
 
     /**
-     * Render an HTML view
+     * Rendering a HTML view
      *
      * @param string $template file frome the themes directory
      * @param array $params
@@ -133,34 +151,69 @@ abstract class AbstractController
     }
 
 
+    // Flash
+    // --
+
+    public function setFlashBag(string $state, string $message): self
+    {
+        $this->flashbag->setFlashBag($state, $message);
+
+        return $this;
+    }
+
+    public function getFlashBag(): array
+    {
+        return $this->flashbag->getFlashBag();
+    }
+
+    public function setFlashData(array $data): self
+    {
+        $this->flashdata->setFlashData($data);
+
+        return $this;
+    }
+
+    public function getFlashData(): array
+    {
+        return $this->flashdata->getFlashData();
+    }
+
+
     // Model Queries
     // --
     
     /**
-     * Reset the Database Statement Definition
+     * Reset the Database Statement
      *
      * @param string $dsd
      * @return void
      */
-    protected function setDatabaseStatementDefinition(string $dsd)
+    protected function setDatabaseStatement(string $statement)
     {
-        $this->dsd = $dsd;
+        $this->statetmentId = $statement;
     }
 
     /**
-     * Undocumented function
+     * Create Model instance
      *
      * @return void
      */
     private function getModel()
     {
-        $modelName = $this->childControllerName;
-        $modelNamespace = "\\App\\Models\\".$modelName."Model";
+        // Retrieve the name of the child controller
+        $controllerChildName = $this->controllerChildName;
 
-        if (class_exists($modelNamespace))
+        // Generate the NameSpace of the Model class
+        $modelClassNamespace = "\\App\\Models\\".$controllerChildName."Model";
+
+        // Check if the Model Class exists
+        if (class_exists($modelClassNamespace))
         {
-            $model = new $modelNamespace;
-            $model->setDatabaseStatementDefinition( $this->dsd );
+            // Create the instance of the Model
+            $model = new $modelClassNamespace;
+
+            // Change the statetement
+            $model->setStatementId( $this->statetmentId );
 
             return $model;
         }
@@ -168,18 +221,51 @@ abstract class AbstractController
         return false;
     }
 
-
-
-    protected function find($id)
+    /**
+     * Find one by $id
+     *
+     * @param integer $id
+     * @param array|null $columns
+     * @return void
+     */
+    protected function find(int $id, ?array $columns=null)
     {
         $model = $this->getModel();
 
         if ($model)
         {
-            return $model->find($id);
+            return $model->find($id, $columns);
         }
+
+        return false;
     }
 
+    /**
+     * Find one by criteria
+     *
+     * @param array $criteria
+     * @param string|null $relation
+     * @param array|null $columns
+     * @return void
+     */
+    protected function findBy(array $criteria, ?string $relation=Query::RELATION_AND, ?array $columns=null)
+    {
+        $model = $this->getModel();
+
+        if ($model)
+        {
+            return $model->findBy($criteria, $relation, $columns);
+        }
+
+        return false;
+    }
+
+    /**
+     * Find all with options
+     *
+     * @param array $options
+     * @return void
+     */
     protected function findAll(array $options=[])
     {
         $model = $this->getModel();
@@ -188,8 +274,39 @@ abstract class AbstractController
         {
             return $model->findAll($options);
         }
+
+        return false;
     }
+    
     // TODO: insert
     // TODO: update
     // TODO: delete
+
+
+
+
+
+
+
+
+    // Security
+    // --
+
+    public function isGranted()
+    {
+        $routesExceptions = [
+            "_login",
+            "_pending",
+            "_logout",
+        ];
+
+        $activeRoute = getApp()->routing()->get('active');
+
+        if (in_array($activeRoute['name'], $routesExceptions))
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -30,7 +30,7 @@ return [
 
     '_login' => [
         'path'          => "/login",
-        'controller'    => "Dragon\\Component\\Security\\Controller#login",
+        'controller'    => "Dragon\\Component\\Security\\SecurityController#login",
         'methods'       => ["GET", "POST"],
         // 'targets'       => ["admin"],
     ],
