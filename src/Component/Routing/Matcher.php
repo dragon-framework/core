@@ -40,10 +40,7 @@ class Matcher
 
             case $this->isMatch:
                 $callableParts          = explode('#', $this->route['target']);
-                // $controllerName         = ucfirst(str_replace('Controller', '', $callableParts[0]));
                 $controllerName         = $callableParts[0];
-                // $controllerNamespace    = 'App\\Controllers\\'.$controllerName.'Controller';
-                // $controllerNamespace    = $controllerName.'Controller';
                 $controllerNamespace    = $controllerName;
                 $controller             = new $controllerNamespace();
                 $method                 = $callableParts[1] ?? "index";
@@ -51,7 +48,8 @@ class Matcher
                 break;
             
             default:
-                new Error404;
+                $error404 = new Error404;
+                $error404->render();
         }
         
         call_user_func_array(array($controller, $method), $params);

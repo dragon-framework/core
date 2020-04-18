@@ -8,8 +8,10 @@
 
     'registration_allowed' => false,
     'registration_default_roles' => [],
+    'authentication_on_registration' => false,
 
-    'login_redirect' => "_profile",
-    'logout_redirect' => "_login",
+    'redirect_on_login' => "_profile",
+    'redirect_on_logout' => "_login",
+    'redirect_on_registration' => "_login",
     
 ];

@@ -9,16 +9,20 @@ use Dragon\Component\Directory\Directory;
 use Dragon\Component\Flash\FlashBag;
 use Dragon\Component\Flash\FlashData;
 use Dragon\Component\Mailer\Mailer;
+use Dragon\Component\Errors\Error404\Controller as Error404;
 
 class SecurityController extends AbstractAdminController
 {
     private $app;
     private $config;
+    private $request;
 
     public function __construct()
     {
         $this->app = getApp();
         $this->config = $this->app->security();
+
+        $this->request = $this->request();
         
         $this->flashbag = new FlashBag;
         $this->flashdata = new FlashData;
@@ -31,6 +35,30 @@ class SecurityController extends AbstractAdminController
      */
     public function register()
     {
+        // If registration not allowed
+        if (!$this->config->get('registration_allowed'))
+        {
+            $error404 = new Error404;
+            $error404->render();
+        }
+
+        // If user already loged in
+        if ($this->user())
+        {
+            $this->redirectToRoute( $this->config->get('redirect_on_login') );
+        }
+
+        // Switch register controller by strategy
+        switch ($this->config->get('strategy'))
+        {
+            case Definition::STRATEGY_EMAIL:
+                return $this->registerStratregy_email();
+                
+            default:
+            case Definition::STRATEGY_PASSWORD:
+            case Definition::STRATEGY_2FA:
+                return $this->registerStratregy_password();
+        }
     }
 
     /**
@@ -55,27 +83,6 @@ class SecurityController extends AbstractAdminController
     }
 
     /**
-     * User authentication
-     *
-     * @return void
-     */
-    public function authentication()
-    {
-        switch ($this->config->get('strategy'))
-        {
-            case Definition::STRATEGY_EMAIL:
-                return $this->authenticationStratregy_email();
-                
-            case Definition::STRATEGY_2FA:
-                return $this->authenticationStratregy_2fa();
-                
-            default:
-            case Definition::STRATEGY_PASSWORD:
-                return $this->authenticationStratregy_password();
-        } 
-    }
-
-    /**
      * Logout
      *
      * @return void
@@ -84,7 +91,16 @@ class SecurityController extends AbstractAdminController
     {
         session_destroy();
     
-        $this->redirectToRoute( $this->config->get('logout_redirect') );
+        $this->redirectToRoute( $this->config->get('redirect_on_logout') );
+    }
+
+    /**
+     * Forgtten Username
+     *
+     * @return void
+     */
+    public function forgetUsername()
+    {
     }
 
     /**
@@ -116,14 +132,13 @@ class SecurityController extends AbstractAdminController
     {
         $security = new SecurityModel;
         $tokenEngine = new Token;
-        $request = $this->request();
 
-        if ($request->isPost())
+        if ($this->request->isPost())
         {
             // Retrieve Post data
             // --
 
-            $email = $request->request()->get('email');
+            $email = $this->request->request()->get('email');
 
 
             // Check Post data
@@ -207,7 +222,7 @@ class SecurityController extends AbstractAdminController
             $this->redirectToRoute("_login");
         }
 
-        if ($token = $request->query()->get('token'))
+        if ($token = $this->request->query()->get('token'))
         {
             $token = urldecode($token);
 
@@ -221,17 +236,19 @@ class SecurityController extends AbstractAdminController
                 // Proceed to login
                 $_SESSION['user'] = [
                     'id' => $user->id,
+                    'email' => $user->email,
+                    'roles' => $user->roles,
                     'firstname' => $user->firstname,
                     'lastname' => $user->lastname,
                     'screenname' => $user->screenname,
-                    'email' => $user->email,
                 ];
 
                 // Set flashbag
                 $this->flashbag->setFlashBag("success", "Welcome back $user->screenname.");
 
-                // Return to Homepage
-                $this->redirectToRoute("admin:homepage");
+                // Redirect user
+                $this->redirectToRoute( $this->config->get('redirect_on_login') );
+
             }
 
             // Invalide token
@@ -255,56 +272,45 @@ class SecurityController extends AbstractAdminController
         echo "Strategy 2FA";
     }
 
-    private function authenticationStratregy_password()
+
+    /**
+     * Registration by strategy password or 2FA
+     *
+     * @return void
+     */
+    public function registerStratregy_password()
     {
-        echo "Authentication Password";
+        if ($this->request->isPost())
+        {
+            // Retrieve form data
+            // --
+
+            // Check form data
+            // --
+
+            // Check if user already exist
+            // --
+
+            // Save user data
+            // --
+
+            
+        }
+
+        return $this->render("_security/pages/register-by-password.html");
     }
 
-    private function authenticationStratregy_email()
+    /**
+     * Registration by strategy email
+     *
+     * @return void
+     */
+    public function registerStratregy_email()
     {
-        // $security = new SecurityModel;
-        // $tokenEngine = new Token;
+        if ($this->request->isPost())
+        {
+        }
 
-        // Retrieve Token
-        // $token = $this->request()->query()->get('token');
-        // $token = urldecode($token);
-
-        // // Find user by token
-        // $user = $security->findByToken( $token );
-
-
-        // // Check the token
-        // if ($tokenEngine->decode($user, $token))
-        // {
-        //     // Proceed to login
-        //     $_SESSION['user'] = [
-        //         'id' => $user->id,
-        //         'firstname' => $user->firstname,
-        //         'lastname' => $user->lastname,
-        //         'screenname' => $user->screenname,
-        //         'email' => $user->email,
-        //     ];
-
-        //     // Set flashbag
-        //     $this->flashbag->setFlashBag("success", "Welcome back $user->screenname.");
-
-        //     // Return to Homepage
-        //     $this->redirectToRoute("homepage");
-        // }
-
-        // // Invalide token
-        // else
-        // {
-        //     // Set flashbag
-        //     $this->flashbag->setFlashBag("danger", "Invalid token...");
-
-        //     // Return to login page
-        //     $this->redirectToRoute("_login");
-        // }
-    }
-
-    private function authenticationStratregy_2fa()
-    {
-        echo "Authentication 2FA";
+        return $this->render("_security/pages/register-by-email.html");
     }
 }
