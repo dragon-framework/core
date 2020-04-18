@@ -73,11 +73,9 @@ class SecurityController extends AbstractAdminController
             case Definition::STRATEGY_EMAIL:
                 return $this->loginStratregy_email();
                 
-            case Definition::STRATEGY_2FA:
-                return $this->loginStratregy_2fa();
-                
             default:
             case Definition::STRATEGY_PASSWORD:
+            case Definition::STRATEGY_2FA:
                 return $this->loginStratregy_password();
         }
     }
@@ -122,12 +120,49 @@ class SecurityController extends AbstractAdminController
     }
 
 
+    // Login by strategy
+    // --
 
+    /**
+     * Login by strategy password or 2FA
+     *
+     * @return void
+     */
     private function loginStratregy_password()
     {
-        echo "TODO: Strategy Password";
+        if ($this->request->isPost())
+        {
+            // Retrieve form data
+            // --
+
+            // Check form data
+            // --
+
+            // Retrieve User
+            // --
+
+            // Verify password
+            // --
+
+            // Authentication
+            // --
+
+            // Redirect
+            // --
+
+            $this->redirectToRoute( $this->config->get('redirect_on_login') );
+        }
+
+        return $this->render("_security/pages/login-by-password.html", [
+            'flashdata' => $this->flashdata->getFlashData()
+        ]);
     }
 
+    /**
+     * Login by strategy email
+     *
+     * @return void
+     */
     private function loginStratregy_email()
     {
         $security = new SecurityModel;
@@ -262,16 +297,14 @@ class SecurityController extends AbstractAdminController
             }
         }
 
-        return $this->render("_security/pages/login.html", [
+        return $this->render("_security/pages/login-by-email.html", [
             'flashdata' => $this->flashdata->getFlashData()
         ]);
     }
 
-    private function loginStratregy_2fa()
-    {
-        echo "Strategy 2FA";
-    }
 
+    // Registration by strategy
+    // --
 
     /**
      * Registration by strategy password or 2FA

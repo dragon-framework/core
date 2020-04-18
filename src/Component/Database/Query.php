@@ -114,6 +114,11 @@ abstract class Query
      */
     private $prefix;
 
+    /**
+     * Fetch mode for queries
+     *
+     * @var integer
+     */
     private $fetchMode;
 
     /**
@@ -433,7 +438,7 @@ abstract class Query
         return $columns;
     }
 
-    private function generate_ColumnsData_string(string $separator, array $columns): string
+    private function generate_ColumnsData_string(string $separator, array $columns): ?string
     {
         $str = null;
 
@@ -503,18 +508,6 @@ abstract class Query
 
         $relation = $relation ?? self::RELATION_AND;
 
-        // foreach ($criterias as $key => $value)
-        // {
-        //     if (!empty($str))
-        //     {
-        //         $str.= " ".$relation." ";
-        //     }
-
-        //     $key = $value['key'];
-        //     $rel = $value['relation'];
-
-        //     $str.= "`$key` $rel :$key";
-        // }
         $str.= $this->generate_ColumnsData_string($relation, $criterias);
     
         if (!empty($str))
@@ -645,41 +638,4 @@ abstract class Query
     {
         dump("Abstract Model Query Count ....");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // private function bindValues($sth, array $values): self
-    // {
-    //     foreach ($values as $key => $value)
-    //     {
-    //         $sth->bindValue(":$key", $value);
-    //     }
-
-    //     return $this;
-    // }
-    // private function bindParams($sth, array $values): self
-    // {
-    //     foreach ($values as $key => $value)
-    //     {
-    //         $sth->bindParam(":$key", $value);
-    //     }
-
-    //     return $this;
-    // }
 }
