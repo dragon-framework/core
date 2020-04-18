@@ -132,7 +132,8 @@ class Builder
         
         if ($absolute)
         {
-            $url.= $this->request->get('base');
+            // $url.= $this->request->get('base');
+            $url.= $this->request->getBase();
         }
 
         $url.= $this->router->generate($name, $params);

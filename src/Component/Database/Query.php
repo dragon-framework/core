@@ -260,6 +260,7 @@ abstract class Query
      * Find One by ID
      *
      * @param integer $id
+     * @param array|null $columns
      * @return void
      */
     public function find(int $id, ?array $columns=null)
@@ -275,6 +276,9 @@ abstract class Query
     /**
      * Find One by params
      *
+     * @param array $criterias
+     * @param string|null $relation
+     * @param array|null $columns
      * @return void
      */
     public function findBy(array $criterias, ?string $relation=self::RELATION_AND, ?array $columns=null)
@@ -286,6 +290,13 @@ abstract class Query
         ], true);
     }
 
+    /**
+     * Find All
+     *
+     * @param array|null $options
+     * @param boolean $single
+     * @return void
+     */
     public function findAll(?array $options=[], $single=false)
     {
         $this->preFetch();
@@ -300,18 +311,16 @@ abstract class Query
             self::OFFSET    => null,
         ], $options);
 
-        // dump( $options );
-
         // Format SQL parts
         $columns = $this->format_SelectColumns($options[ self::COLUMNS ]);
-        $criterias = $this->format_WhereCriteria($options[ self::CRITERIAS ]);
+        $criterias = $this->format_Columns($options[ self::CRITERIAS ]);
 
         // Define SQL
-        $sql = $this->Select( $columns, $options[ self::DISTINCT ] );
-        $sql.= $this->From( $this->table );
-        $sql.= $this->Where( $criterias, $options[ self::RELATION ] );
-        $sql.= $this->OrderBy( $options[ self::ORDERBY ] );
-        $sql.= $this->Limit( $options[ self::LIMIT ], $options[ self::OFFSET ] );
+        $sql = $this->sqlPart_Select( $columns, $options[ self::DISTINCT ] );
+        $sql.= $this->sqlPart_From( $this->table );
+        $sql.= $this->sqlPart_Where( $criterias, $options[ self::RELATION ] );
+        $sql.= $this->sqlPart_OrderBy( $options[ self::ORDERBY ] );
+        $sql.= $this->sqlPart_Limit( $options[ self::LIMIT ], $options[ self::OFFSET ] );
 
         // Sql Qtatement
         $stmt = $this->dbh()->prepare($sql);
@@ -329,6 +338,47 @@ abstract class Query
             ? $stmt->fetch( $this->fetchMode ) 
             : $stmt->fetchAll( $this->fetchMode )
         ;
+    }
+
+    /**
+     * Update
+     *
+     * @param array $options
+     * @return void
+     */
+    public function update(array $options)
+    {
+        $this->preFetch();
+
+        $options = array_merge([
+            self::COLUMNS   => [],
+            self::CRITERIAS => []
+        ], $options);
+
+        // Format SQL parts
+        $columns = $this->format_Columns($options[ self::COLUMNS ]);
+        $criterias = $this->format_Columns($options[ self::CRITERIAS ]);
+
+        // Define SQL
+        $sql = $this->sqlPart_Update( $this->table );
+        $sql.= $this->sqlPart_Set( $columns );
+        $sql.= $this->sqlPart_Where( $criterias );
+
+        // Sql Qtatement
+        $stmt = $this->dbh()->prepare($sql);
+
+        // Binding values
+        foreach ($columns as $column)
+        {
+            $stmt->bindValue(":".$column['key'], $column['value']);
+        }
+        foreach ($criterias as $criteria)
+        {
+            $stmt->bindValue(":".$criteria['key'], $criteria['value'], $criteria['type']);
+        }
+
+        // Execute the query
+        return $stmt->execute();
     }
 
 
@@ -354,33 +404,53 @@ abstract class Query
         return $str ?? "*";
     }
 
-    private function format_WhereCriteria(?array $criterias): array
+    private function format_Columns(?array $columns): array
     {
         $defaults = [
             'key'       => null,
             'value'     => null,
-            'type'      => null,
+            'type'      => self::PARAM_STR,
             'relation'  => self::EQUAL
         ];
 
-        foreach ($criterias as $key => $value)
+        foreach ($columns as $key => $value)
         {
             if (is_array($value))
             {
-                $criterias[$key] = array_merge($defaults, $value);
+                $columns[$key] = array_merge($defaults, $value);
             }
             else
             {
-                array_push($criterias, array_merge($defaults, [
+                array_push($columns, array_merge($defaults, [
                     'key' => $key,
                     'value' => $value,
                 ]));
 
-                unset($criterias[$key]);
+                unset($columns[$key]);
             }
         }
 
-        return $criterias;
+        return $columns;
+    }
+
+    private function generate_ColumnsData_string(string $separator, array $columns): string
+    {
+        $str = null;
+
+        foreach ($columns as $key => $value)
+        {
+            if (!empty($str))
+            {
+                $str.= " ".$separator." ";
+            }
+
+            $key = $value['key'];
+            $rel = $value['relation'];
+
+            $str.= "`$key`$rel:$key";
+        }
+
+        return $str;
     }
 
 
@@ -392,7 +462,7 @@ abstract class Query
      * @param array $options
      * @return string
      */
-    private function Select(string $columns, bool $distinct=false): string
+    private function sqlPart_Select(string $columns, bool $distinct=false): string
     {
         $str = "SELECT ";
 
@@ -406,12 +476,17 @@ abstract class Query
         return $str;
     }
 
+    private function sqlPart_Update(string $table): string
+    {
+        return "UPDATE $table";
+    }
+
     /**
      * Set From part
      *
      * @return void
      */
-    private function From(string $table): string
+    private function sqlPart_From(string $table): string
     {
         return " FROM `$table`";
     }
@@ -422,25 +497,25 @@ abstract class Query
      * @param array $criterias
      * @return string
      */
-    private function Where(array $criterias, ?string $relation=null): ?string
+    private function sqlPart_Where(array $criterias, ?string $relation=null): ?string
     {
         $str = null;
 
         $relation = $relation ?? self::RELATION_AND;
 
-        foreach ($criterias as $key => $value)
-        {
-            if (!empty($str))
-            {
-                $str.= " ".$relation." ";
-            }
+        // foreach ($criterias as $key => $value)
+        // {
+        //     if (!empty($str))
+        //     {
+        //         $str.= " ".$relation." ";
+        //     }
 
-            $key = $value['key'];
-            $rel = $value['relation'];
+        //     $key = $value['key'];
+        //     $rel = $value['relation'];
 
-            $str.= "`$key` $rel :$key";
-            
-        }
+        //     $str.= "`$key` $rel :$key";
+        // }
+        $str.= $this->generate_ColumnsData_string($relation, $criterias);
     
         if (!empty($str))
         {
@@ -451,12 +526,23 @@ abstract class Query
     }
 
     /**
+     * Build SET part (for update)
+     *
+     * @param array $data
+     * @return string
+     */
+    private function sqlPart_Set(array $data): string
+    {
+        return " SET ".$this->generate_ColumnsData_string(",", $data);
+    }
+
+    /**
      * Generate Order By clause
      *
      * @param array $options
      * @return string
      */
-    private function OrderBy($orderBy): string
+    private function sqlPart_OrderBy($orderBy): string
     {
         $str = "";
         
@@ -502,7 +588,7 @@ abstract class Query
      * @param array $options
      * @return string
      */
-    private function Limit(?int $limit, ?int $offset): string
+    private function sqlPart_Limit(?int $limit, ?int $offset): string
     {
         $str = "";
 
@@ -555,11 +641,6 @@ abstract class Query
         dump("Abstract Model Query Insert ....");
     }
 
-    public function update()
-    {
-        dump("Abstract Model Query Update ....");
-    }
-
     public function count()
     {
         dump("Abstract Model Query Count ....");
@@ -583,22 +664,22 @@ abstract class Query
 
 
 
-    private function bindValues($sth, array $values): self
-    {
-        foreach ($values as $key => $value)
-        {
-            $sth->bindValue(":$key", $value);
-        }
+    // private function bindValues($sth, array $values): self
+    // {
+    //     foreach ($values as $key => $value)
+    //     {
+    //         $sth->bindValue(":$key", $value);
+    //     }
 
-        return $this;
-    }
-    private function bindParams($sth, array $values): self
-    {
-        foreach ($values as $key => $value)
-        {
-            $sth->bindParam(":$key", $value);
-        }
+    //     return $this;
+    // }
+    // private function bindParams($sth, array $values): self
+    // {
+    //     foreach ($values as $key => $value)
+    //     {
+    //         $sth->bindParam(":$key", $value);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

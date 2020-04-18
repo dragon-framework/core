@@ -24,7 +24,7 @@ class Request
     // Host
     // --
 
-    private function getBase(): ?string
+    public function getBase(): ?string
     {
         $base = $this->getScheme();
         $base.= "://";

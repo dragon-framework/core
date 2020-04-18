@@ -1,10 +1,6 @@
 <?php 
-return [
 
-    /**
-     * Documentation
-     */
-
+$routes_Documentation = [
     '_doc' => [
         'path'          => "/documentation",
         'children'      => [
@@ -21,18 +17,26 @@ return [
                 // 'targets'       => ["public"]
             ]
         ]
-    ],
+    ]
+];
 
-
-    /**
-     * Security
-     */
+$routes_Security = [
 
     '_login' => [
         'path'          => "/login",
         'controller'    => "Dragon\\Component\\Security\\SecurityController#login",
         'methods'       => ["GET", "POST"],
-        // 'targets'       => ["admin"],
     ],
 
+    '_authentication' => [
+        'path'          => "/login/[:token]",
+        'controller'    => "Dragon\\Component\\Security\\SecurityController#login",
+        'methods'       => ["GET"],
+    ]
+
 ];
+
+return array_merge(
+    $routes_Documentation,
+    $routes_Security
+);

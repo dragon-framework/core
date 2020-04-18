@@ -42,6 +42,7 @@ abstract class AbstractController
 	public function __construct()
 	{
         $this->setControllerChildName();
+
         $this->flashbag = new FlashBag;
         $this->flashdata = new FlashData;
     }
@@ -134,20 +135,7 @@ abstract class AbstractController
      */
     public function generateUrl(string $routeName, array $params=array(), bool $absolute=false)
     {
-        $app    = getApp();
-        $router = $app->routing()->getRouter();
-        $url    = $router->generate($routeName, $params);
-
-        if ($absolute)
-        {
-            $u = Uri::createFromServer($_SERVER);
-            $base = json_decode(json_encode($u));
-            $base = substr($base, -1) == "/" ? substr($base, 0, -1) : null;
-
-            $url = $base . $url;
-        }
-
-        return $url;
+        return getApp()->routing()->generateUrl($routeName, $params, $absolute);
     }
 
 
@@ -277,7 +265,7 @@ abstract class AbstractController
 
         return false;
     }
-    
+
     // TODO: insert
     // TODO: update
     // TODO: delete
@@ -299,6 +287,8 @@ abstract class AbstractController
             "_pending",
             "_logout",
         ];
+
+        dump( $_SESSION );
 
         $activeRoute = getApp()->routing()->get('active');
 
