@@ -42,4 +42,16 @@
         'methods'       => ["GET", "POST"],
     ],
 
+    '_profile' => [
+        'path'          => "/profile",
+        'controller'    => "Dragon\\Component\\Security\\SecurityController#profile",
+        'methods'       => ["GET"],
+    ],
+
+    '_activation' => [
+        'path'          => "/activation/[:token]",
+        'controller'    => "Dragon\\Component\\Security\\SecurityController#activation",
+        'methods'       => ["GET"],
+    ],
+
 ];

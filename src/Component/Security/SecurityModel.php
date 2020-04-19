@@ -79,4 +79,51 @@ class SecurityModel extends AbstractModel
             ]
         ]);
     }
+
+    /**
+     * Update Login Stats
+     *
+     * @param object $user
+     * @return void
+     */
+    public function putLoginStats(object $user)
+    {
+        $date = new \DateTime;
+        $counter = (int) $user->login_counter + 1;
+
+        return $this->update([
+            Query::COLUMNS   => [
+                'last_login_date' => $date->format("Y-m-d H:i:s"),
+                'login_counter' => $counter,
+            ],
+            Query::CRITERIAS => [
+                'id' => $user->id
+            ]
+        ]);
+    }
+
+    /**
+     * Update activation data
+     *
+     * @param object $user
+     * @return void
+     */
+    public function patchActivation(object $user)
+    {
+        $date = new \DateTime;
+
+        return $this->update([
+            Query::COLUMNS   => [
+                'is_active' => 1,
+                'activation_date' => $date->format("Y-m-d H:i:s"),
+                'auth_token' => null,
+                'auth_token_create' => null,
+                'auth_token_expiration' => null,
+                'auth_token_key' => null,
+            ],
+            Query::CRITERIAS => [
+                'id' => $user->id
+            ]
+        ]);
+    }
 }

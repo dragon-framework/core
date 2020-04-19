@@ -266,6 +266,24 @@ abstract class AbstractController
         return false;
     }
 
+    /**
+     * Find all with options
+     *
+     * @param array $options
+     * @return void
+     */
+    protected function lastId(): int
+    {
+        $model = $this->getModel();
+
+        if ($model)
+        {
+            return $model->lastId();
+        }
+
+        return 0;
+    }
+
     // TODO: insert
     // TODO: update
     // TODO: delete
@@ -287,14 +305,7 @@ abstract class AbstractController
      */
     public function user(): array
     {
-        $user = [];
-
-        if (session_id())
-        {
-            $user = $_SESSION['user'] ?? [];
-        }
-
-        return $user;
+        return getApp()->security()->user();
     }
 
     /**
@@ -304,7 +315,7 @@ abstract class AbstractController
      */
     public function isAnonymous(): bool
     {
-        return empty($this->user());
+        return getApp()->security()->isAnonymous();
     }
 
     /**
@@ -314,7 +325,7 @@ abstract class AbstractController
      */
     public function isAuthenticated(): bool
     {
-        return !empty($this->user());
+        return getApp()->security()->isAuthenticated();
     }
 
     /**
@@ -325,19 +336,7 @@ abstract class AbstractController
      */
     public function hasRoles($roles): bool
     {
-        if (!is_array($roles))
-        {
-            $roles = [$roles];
-        }
-
-        // Retrieve users roles
-        $usersRoles = [];
-        // ...
-
-        // Check if $roles in array $usersRoles
-        // ...
-
-        return false;
+        return getApp()->security()->hasRoles($roles);
     }
 
 

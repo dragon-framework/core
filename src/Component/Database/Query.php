@@ -346,6 +346,57 @@ abstract class Query
     }
 
     /**
+     * Insert Into
+     *
+     * @param array $data
+     * @return void
+     */
+    public function insert(array $data)
+    {
+        $this->preFetch();
+
+        // Format SQL parts
+        $data = $this->format_Columns($data);
+
+        // Generate columns
+        $columns = null;
+        foreach ($data as $column)
+        {
+            if (!empty($columns)) 
+            {
+                $columns.= ", ";
+            }
+            $columns.= "`".$column['key']."`";
+        }
+
+        // Generate values
+        $values = null;
+        foreach ($data as $value)
+        {
+            if (!empty($values)) 
+            {
+                $values.= ", ";
+            }
+            $values.= ":".$value['key'];
+        }
+        
+        // Define SQL
+        $sql = "INSERT INTO $this->table ($columns) VALUES ($values);";
+
+        // Sql Qtatement
+        $stmt = $this->dbh()->prepare($sql);
+
+        // Binding values
+        foreach ($data as $item)
+        {
+            $stmt->bindValue(":".$item['key'], $item['value'], $item['type']);
+        }
+
+        // Execute the query
+        return $stmt->execute();
+    }
+
+    /**
      * Update
      *
      * @param array $options
@@ -384,6 +435,11 @@ abstract class Query
 
         // Execute the query
         return $stmt->execute();
+    }
+
+    public function lastId()
+    {
+        return $this->dbh()->lastInsertId();
     }
 
 
@@ -627,11 +683,6 @@ abstract class Query
     public function delete()
     {
         dump("Abstract Model Query Delete ....");
-    }
-
-    public function insert()
-    {
-        dump("Abstract Model Query Insert ....");
     }
 
     public function count()

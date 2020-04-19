@@ -1,12 +1,13 @@
 <?php
 
-use Dragon\Component\FileSystem\FileSystem;
-$fs = new FileSystem;
-
-$routes_Documentation = $fs->include(__DIR__."/../../Documentation/Routes.php");
-$routes_Security = $fs->include(__DIR__."/../../Security/Routes.php");
+$fs = new Dragon\Component\FileSystem\FileSystem;
 
 return array_merge(
-    $routes_Documentation,
-    $routes_Security,
+
+    // Documentation routes
+    $fs->include(__DIR__."/../../Documentation/Routes.php") ?? [],
+
+    // Security routes
+    $fs->include(__DIR__."/../../Security/Routes.php") ?? [],
+
 );

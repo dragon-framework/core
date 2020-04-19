@@ -4,6 +4,7 @@ namespace Dragon\Component\Request;
 class Request 
 {
     private $data;
+    private $method;
 
     public function __call(string $key, array $arguments)
     {
@@ -14,8 +15,12 @@ class Request
 
     public function get(string $key)
     {
-        $data = $this->data[$key] ?? null;
+        $data = $this->data[$this->method][$key] ?? null;
+        $data = trim($data);
+        $data = stripslashes($data);
         $data = htmlspecialchars($data);
+
+        $this->method = null;
 
         return $data;
     }
@@ -74,27 +79,41 @@ class Request
 
     private function getQuery(): ?self
     {
+        $method = "query";
+
         // Get data from $_GET
-        $this->data = $_GET;
+        if (isset($_GET))
+        {
+            $this->data[$method] = $_GET;
+
+            unset($_GET);
+        }
 
         // Get data from active route params
         $route = getApp()->routing()->getActive();
 
         if (isset($route['params']))
         {
-            $this->data = array_merge($this->data, $route['params']);
+            $this->data[$method] = array_merge($this->data[$method], $route['params']);
         }
 
-        unset($_GET);
-        
+        $this->method = $method;
+
         return $this;
     }
 
     private function getRequest(): self
     {
-        $this->data = $_POST;
+        $method = "request";
 
-        unset($_POST);
+        if (isset($_POST) )
+        {
+            $this->data[$method] = $_POST;
+    
+            unset($_POST);
+        }
+
+        $this->method = $method;
 
         return $this;
     }

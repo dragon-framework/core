@@ -12,10 +12,36 @@ Create the `config/security.php` based on `config/security-dist.php`.
 |`authentication`|`bool`|true|Activate security module.|
 |`authentication_strategy`|`string`|"email"|Define the security strategy<br>Values : `password`|`email`|`2fa`.|
 |`authentication_property`|`string`|"email"|User propety used to identify the user.|
+
+#### Registration strategy
+
+|Key|Type|Default|Description|
+|--|--|--|--|
 |`registration_allowed`|`bool`|false|If true, anybody can create an account to the application.|
 |`registration_default_roles`|`array`|[]|Define defaults roles for new members.|
-|`redirect_on_login`|`string`|"_profile"|The name of the route you want to redirect after user log in.|
-|`redirect_on_logout`|`string`|"_login"|The name of the route you want to redirect after user log out.|
+|`authentication_on_registration`|`bool`|false|Automaticaly log in the user after registration.|
+
+#### Password strategy
+
+|Key|Type|Default|Description|
+|--|--|--|--|
+|`password_min_lenght`|`integer`|8|.|
+|`password_encoder`|`string`|"default"|Define the algorythm to use to hash the password.|
+
+#### Redirection after event
+
+|Key|Type|Default|Description|
+|--|--|--|--|
+|`redirect_on_login`|`string`|"_profile"|Route to redirect user after login.|
+|`redirect_on_logout`|`string`|"_login"|Route to redirect user after logout.|
+|`redirect_on_registration`|`string`|"_login"|Route to redirect user after registration.|
+
+#### Activation strategy
+
+|Key|Type|Default|Description|
+|--|--|--|--|
+|`activation`|`bool`|false|Registration need activation.|
+|`activation_delayed`|`integer`|0|Delay (in minute) before user must activate his account to accede to the service.|
 
 ## Routes {#routes}
 

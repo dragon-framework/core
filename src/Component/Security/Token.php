@@ -24,12 +24,6 @@ class Token
 
         $this->config = $app->security();
         $this->date = new \DateTime();
-        $this->expiration = $this->config->get('token_expiration');
-
-        $this
-            ->setDateCreate()
-            ->setDateExpire()
-        ;
     }
 
     private function setDateCreate(): self
@@ -75,8 +69,15 @@ class Token
         return new \DateInterval($period);
     }
 
-    public function encode(object $user): object
+    public function encode(object $user, int $expiration): object
     {
+        $this->expiration = $expiration;
+        
+        $this
+            ->setDateCreate()
+            ->setDateExpire()
+        ;
+
         $key_primary = randstr( self::KEY_LENGTH );
         $secondary_key = randstr( self::KEY_LENGTH );
         $md5_timestamp_create = md5( $this->getTimestampCreate() );

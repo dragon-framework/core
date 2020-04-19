@@ -1,6 +1,7 @@
 # Flash
 
 - [FlashBag](#flashbag)
+    - [hasFlashBag](#methods-hasFlashBag)
     - [setFlashBag](#methods-setFlashBag)
     - [getFlashBag](#methods-getFlashBag)
 - [FlashData](#flashdata)
@@ -9,17 +10,26 @@
 
 ## FlashBag {#flashbag}
 
+### hasFlashBag() {#methods-hasFlashBag}
+
+Return true if a flashbag is already defined.
+
+`$this->hasFlashBag()`
+
 ### setFlashBag() {#methods-setFlashBag}
 
 Set a flash message.
 
-`$this->setFlashBag(string $state, string $message)`
+`$this->setFlashBag(string $state, string $message[, bool $override=true])`
 
 state
 : -.
 
 message
 : -.
+
+override
+: if false, the message will not override flashbag if already defined.
 
 ### getFlashBag() {#methods-getFlashBag}
 

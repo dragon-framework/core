@@ -3,10 +3,15 @@ namespace Dragon\Component\Flash;
 
 class FlashBag
 {
-    public function setFlashBag(string $state, string $message): self
+    public function setFlashBag(string $state, string $message, bool $override=true): self
     {
         if (session_id())
         {
+            if (!$override && isset($_SESSION['flashbag']))
+            {
+                return $this;
+            }
+
             $_SESSION['flashbag'] = [
                 'state' => $state,
                 'message' => $message,
@@ -14,6 +19,11 @@ class FlashBag
         }
 
         return $this;
+    }
+
+    public function hasFlashBag(): bool
+    {
+        return session_id() && isset($_SESSION['flashbag']);
     }
 
     public function getFlashBag(): array
