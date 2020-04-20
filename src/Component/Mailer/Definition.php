@@ -9,7 +9,7 @@ class Definition
     /**
      * Mailer input definition file
      */
-    const SOURCE = Directory::DIRECTORY_APP_CONFIG . "mailer.php";
+    const SOURCE = Directory::DIRECTORY_APP_CONFIG . "mailer/mailer.php";
 
     /**
      * Mailer final definition

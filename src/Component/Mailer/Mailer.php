@@ -106,13 +106,13 @@ class Mailer
         return $this;
     }
 
-    private function expeditor(): self
+    private function sender(): self
     {
-        $expeditor = $this->from ?? $this->config->get('expeditor');
+        $sender = $this->from ?? $this->config->get('sender');
 
-        if (!empty($expeditor))
+        if (!empty($sender))
         {
-            $this->mail->setFrom($expeditor[0], $expeditor[1]);
+            $this->mail->setFrom($sender[0], $sender[1]);
         }
         
         return $this;
@@ -217,7 +217,7 @@ class Mailer
         try 
         {
             $this->settings();
-            $this->expeditor();
+            $this->sender();
             $this->mail->send();
         } 
         catch(Exception $e) 

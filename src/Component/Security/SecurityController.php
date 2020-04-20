@@ -250,6 +250,8 @@ class SecurityController extends AbstractAdminController
             {
                 $errors['email'] = "An account using this email address is already registered";
             }
+            // TODO : Check if user exist : By Username
+            // TODO : Check if user exist : By Email Or Username
 
 
             // Save user data
@@ -257,12 +259,15 @@ class SecurityController extends AbstractAdminController
 
             if (empty($errors))
             {
+                $roles = array_merge($this->config->get('registration_default_roles'), ["ADMIN"]);
+
                 // Save data in database
                 $registration = $this->securityModel->insert([
                     'firstname' => $firstname,
                     'lastname' => $lastname,
                     'email' => $email,
                     'password' => $password_hash,
+                    'roles' => json_encode($roles),
                 ]);
 
                 // If save data error
@@ -520,10 +525,12 @@ class SecurityController extends AbstractAdminController
     {
         if (session_id())
         {
+            $roles = array_merge(['AUTHENTICATED'], json_decode($user->roles, true));
+
             $_SESSION['user'] = [
                 'id' => $user->id,
                 'email' => $user->email,
-                'roles' => $user->roles,
+                'roles' => $roles,
                 'firstname' => $user->firstname,
                 'lastname' => $user->lastname,
                 'screenname' => $user->screenname,
@@ -549,7 +556,20 @@ class SecurityController extends AbstractAdminController
         // Retrieve User
         // --
 
-        $user = $this->securityModel->findByEmail($login, false);
+        switch ($this->config->get('authentication_property'))
+        {
+            case 'email':
+            $user = $this->securityModel->findByEmail($login, false);
+            break;
+
+            case 'username':
+            $user = $this->securityModel->findByUsername($login, false);
+            break;
+
+            default:
+            $user = $this->securityModel->findByEmailOrUsername($login, false);
+            break;
+        }
 
         // User not found on database
         if (!$user)

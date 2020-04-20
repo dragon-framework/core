@@ -11,7 +11,6 @@
 |Key|Type|Default|Description|
 |--|--|--|--|
 |`title`|`string`|""|The title of the website.|
-|`environment`|`string`|"prod"|The execution environment mode.|
 |`session`|`bool`|true|Start PHP Session if TRUE.|
 
 ## Developpement Configuration {#developpement-configuration}

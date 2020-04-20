@@ -2,20 +2,33 @@
 
 - [Create a controller](#create-a-controller)
 - [Methods](#methods)
-    - [render()](#method-render)
-    - [request()](#method-request)
-    - [redirect()](#method-redirect)
-    - [redirectToRoute()](#method-redirectToRoute)
-    - [generateUrl()](#method-generateUrl)
-    - [setFlashBag()](#method-setFlashBag)
-    - [getFlashBag()](#method-getFlashBag)
-    - [setFlashData()](#method-setFlashData)
-    - [getFlashData()](#method-getFlashData)
-    - [setDatabaseStatementDefinition()](#method-setDatabaseStatementDefinition)
-    - [getModel()](#method-getModel)
-    - [find()](#method-find)
-    - [findAll()](#method-findAll)
-    - [isGranted()](#method-isGranted)
+    - Rendering
+        - [render()](#method-render)
+    - Request
+        - [request()](#method-request)
+    - Routes
+        - [redirect()](#method-redirect)
+        - [redirectToRoute()](#method-redirectToRoute)
+        - [generateUrl()](#method-generateUrl)
+    - Flash Message / Data
+        - [setFlashBag()](#method-setFlashBag)
+        - [getFlashBag()](#method-getFlashBag)
+        - [setFlashData()](#method-setFlashData)
+        - [getFlashData()](#method-getFlashData)
+    - Database
+        - [setDatabaseStatement()](#method-setDatabaseStatement)
+        - [find()](#method-find)
+        - [findBy()](#method-findBy)
+        - [findAll()](#method-findAll)
+        - [insert()](#method-insert)
+        - [update()](#method-update)
+        - [lastId()](#method-lastId)
+    - Security
+        - [user()](#method-user)
+        - [isAnonymous()](#method-isAnonymous)
+        - [isAuthenticated()](#method-isAuthenticated)
+        - [hasRoles()](#method-hasRoles)
+        - [isGranted()](#method-isGranted)
 
 ## Create a controller {#create-a-controller}
 
@@ -50,11 +63,15 @@ class DefaultController extends AbstractController
 
 ## Methods {#methods}
 
-### render() {#method-render}
+### Rendering
+
+#### render() {#method-render}
 
 Rendering a HTML view
 
-`$this->render(string $template [, array $params=array()]);`
+```php
+$this->render(string $template [, array $params=array()]);
+```
 
 template
 : The file name in the theme directory `src/Templates`.
@@ -62,28 +79,38 @@ template
 params
 : Passing parameters from controller to the template.
 
-### request() {#method-request}
+### Request
+
+#### request() {#method-request}
 
 Return the Request module
 
-`$this->request()`
+```php
+$this->request()
+```
 
 _See the documentation of [`Request`](Request.md) for more info._
 
-### redirect() {#method-redirect}
+### Routes
+
+#### redirect() {#method-redirect}
 
 Redirect the user to the URI.
 
-`$this->redirect(string $uri);`
+```php
+$this->redirect(string $uri);
+```
 
 uri
 : URI address you want to redirect the user
 
-### redirectToRoute() {#method-redirectToRoute}
+#### redirectToRoute() {#method-redirectToRoute}
 
 Redirect the user with a defined route.
 
-`$this->redirectToRoute(string $routeName [, array $params=array()[, bool $absolute=false]]);`
+```php
+$this->redirectToRoute(string $routeName [, array $params=array()[, bool $absolute=false]]);
+```
 
 routeName
 : The name of the route.
@@ -94,11 +121,13 @@ params
 absolute
 : If true, will generate the absolute URL.
 
-### generateUrl() {#method-generateUrl}
+#### generateUrl() {#method-generateUrl}
 
 Generate URL with a defined route.
 
-`$this->generateUrl(string $routeName [, array $params=array() [, bool $absolute=false]]);`
+```php
+$this->generateUrl(string $routeName [, array $params=array() [, bool $absolute=false]]);
+```
 
 routeName
 : The name of the route.
@@ -109,41 +138,175 @@ params
 absolute
 : If true, will generate the absolute URL.
 
-### setFlashBag() {#method-setFlashBag}
+### Flash Message / Data
 
-### getFlashBag() {#method-getFlashBag}
+#### setFlashBag() {#method-setFlashBag}
 
-### setFlashData() {#method-setFlashData}
+Define a flash message.
 
-### getFlashData() {#method-getFlashData}
+```php
+$this->setFlashBag(string $state, string $message[, bool $override=true])
+```
 
+state
+: State of message. Values : `success`, `warning`, `danger`, `info`, `primary`, `secondary`, `light`, `dark`.
 
-### setDatabaseStatementDefinition() {#method-setDatabaseStatementDefinition}
+message
+: The message
 
+override
+: if false, the message will not override flashbag if already defined.
 
+#### getFlashBag() {#method-getFlashBag}
 
-`$this->setDatabaseStatementDefinition()`
+Read a flash message.
 
-### getModel() {#method-getModel}
+```php
+$this->getFlashBag();
+```
 
+#### setFlashData() {#method-setFlashData}
 
+Define flash data.
 
-`$this->getModel()`
+```php
+$this->setFlashData(array $data);
+```
 
-### find() {#method-find}
+data
+: Array of data.
 
+#### getFlashData() {#method-getFlashData}
 
+Read flash data.
 
-`$this-find()>`
+```php
+$this->getFlashData();
+```
 
-### findAll() {#method-findAll}
+### Database
 
+#### setDatabaseStatement() {#method-setDatabaseStatement}
 
+Define the name of database statement to select database config before query.
 
-`$this->findAll()`
+```php
+$this->setDatabaseStatement(string $statement);
+```
 
-### isGranted() {#method-isGranted}
+statement
+: The name of statement. see Database configuration.
 
+#### find() {#method-find}
 
+Set query to find one of entity by id.
 
-`$this->isGranted()`
+```php
+$this->find(int $id[, ?array $columns=null]);
+```
+
+id
+: ID of the entity you want to find.
+
+columns
+: Returned columns. Default: *.
+
+#### findBy() {#method-findBy}
+
+Set query to find one of entity by parameters.
+
+```php
+$this->findBy(array $criteria[, ?string $relation=Query::RELATION_AND[, ?array $columns=null]]);
+```
+
+criteria
+: Array of criterias (Parts WHERE)
+
+relation
+: Relation type between criterias. Default AND.
+
+columns
+: Returned columns. Default: *.
+
+#### findAll() {#method-findAll}
+
+Set query to find entities by parameters.
+
+```php
+$this->findAll(array $options=[]);
+```
+
+options
+: Search options
+
+#### insert() {#method-insert}
+
+Insert an entity.
+
+```php
+$this->insert(array $data);
+```
+
+data
+: Array of sata you want to insert
+
+#### update() {#method-update}
+
+Update an entity.
+
+```php
+$this->update(array $options);
+```
+
+options
+: Update options
+
+#### lastId() {#method-lastId}
+
+Retrieve the last ID inserted.
+
+```php
+$this->lastId();
+```
+
+### Security
+
+#### user() {#method-user}
+
+Get user data. Return false if user is not authenticated.
+
+```php
+$this->user();
+```
+
+#### isAnonymous() {#method-isAnonymous}
+
+Return true if user is not authenticated.
+
+```php
+$this->isAnonymous();
+```
+
+#### isAuthenticated() {#method-isAuthenticated}
+
+Return true if user is authenticated.
+
+```php
+$this->isAuthenticated();
+```
+
+#### hasRoles() {#method-hasRoles}
+
+Return an array with user roles.
+
+```php
+$this->hasRoles();
+```
+
+#### isGranted() {#method-isGranted}
+
+Return true if the acces is allowed for the user.
+
+```php
+$this->isGranted();
+```

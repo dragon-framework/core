@@ -16,6 +16,7 @@
             "Dragon\\": "src/"
         },
         "files": [
+            "src/Component/Security/Roles.php",
             "src/Utils/Utils.php"
         ]
     },

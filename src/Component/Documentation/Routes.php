@@ -2,18 +2,25 @@
     '_doc' => [
         'path'          => "/documentation",
         'children'      => [
-            'index'     => [
+
+            'index' => [
                 'path'          => "",
                 'controller'    => "Dragon\\Component\\Documentation\\Controller#index",
                 'methods'       => ["GET"],
-                // 'targets'       => ["public"]
             ],
-            'section'   => [
+
+            'section' => [
                 'path'          => "/[:section]/[:md5]",
                 'controller'    => "Dragon\\Component\\Documentation\\Controller#section",
                 'methods'       => ["GET"],
-                // 'targets'       => ["public"]
-            ]
+            ],
+
+            'examples' => [
+                'path'          => "/examples",
+                'controller'    => "Dragon\\Component\\Documentation\\Controller#examples",
+                'methods'       => ["GET"],
+            ],
+
         ]
     ]
 ];

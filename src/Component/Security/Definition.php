@@ -43,7 +43,7 @@ class Definition
         $this->definitions = array_merge($this->definitions, $this->fs->include( self::DEFAULTS_RESOURCES ) ?? []);
 
         // Get app definition
-        $this->definitions = array_merge($this->definitions, $this->fs->include( Directory::DIRECTORY_APP_CONFIG."security.php" ) ?? []);
+        $this->definitions = array_merge($this->definitions, $this->fs->include( Directory::DIRECTORY_APP_CONFIG."security/security.php" ) ?? []);
         
         return $this;
     }

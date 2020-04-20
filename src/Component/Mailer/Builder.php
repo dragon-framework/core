@@ -46,21 +46,29 @@ class Builder
     {
         return $this->definition->get('port');
     }
-    public function getExpeditor()
+    public function getSender()
     {
-        $expeditor = [];
+        $sender = [];
 
-        if (!empty($this->definition->get('from_address')))
+        if (!empty($this->definition->get('sender_address')))
         {
-            array_push($expeditor, $this->definition->get('from_address'));
+            array_push($sender, $this->definition->get('sender_address'));
         }
 
-        if (!empty($this->definition->get('from_name')))
+        if (!empty($this->definition->get('sender_name')))
         {
-            array_push($expeditor, $this->definition->get('from_name'));
+            array_push($sender, $this->definition->get('sender_name'));
         }
 
-        return $expeditor;
+        return $sender;
+    }
+    public function getSender_address()
+    {
+        return $this->definition->get('sender_address');
+    }
+    public function getSender_name()
+    {
+        return $this->definition->get('sender_name');
     }
     public function getNoreply()
     {

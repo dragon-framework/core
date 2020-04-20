@@ -29,7 +29,7 @@ class Statements
     {
         $fs = new FileSystem;
 
-        $this->statements = $this->validate( $fs->include( Directory::DIRECTORY_APP_CONFIG . "databases.php" ) ?? [] );
+        $this->statements = $this->validate( $fs->include( Directory::DIRECTORY_APP_CONFIG . "databases/databases.php" ) ?? [] );
     }
 
     /**

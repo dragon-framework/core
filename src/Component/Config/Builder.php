@@ -11,9 +11,9 @@ class Builder
     /**
      * Config filename
      */
-    const APP_CONFIG        = Directory::DIRECTORY_APP_CONFIG . "config.php";
+    const APP_CONFIG        = Directory::DIRECTORY_APP_CONFIG . "config/config.php";
     const CORE_CONFIG       = Directory::DIRECTORY_CORE_CONFIG . "Config.php";
-    const APP_CONFIG_DEV    = Directory::DIRECTORY_APP_CONFIG . "config-dev.php";
+    const APP_CONFIG_DEV    = Directory::DIRECTORY_APP_CONFIG . "config/config-dev.php";
     const CORE_CONFIG_DEV   = Directory::DIRECTORY_CORE_CONFIG . "Dev.php";
     // const APP_CONFIG_TEST   = Directory::DIRECTORY_APP_CONFIG . "config-test.php";
 

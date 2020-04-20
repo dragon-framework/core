@@ -28,7 +28,7 @@ class SecurityModel extends AbstractModel
     public function findByEmail(string $email, bool $safe=true)
     {
         $result = $this->findBy([[
-            'key'       => $this->config->get('authentication_property'),
+            'key'       => "email",
             'value'     => $email,
             'type'      => Query::PARAM_STR,
             'relation'  => Query::EQUAL,
@@ -37,6 +37,48 @@ class SecurityModel extends AbstractModel
         if ($safe) unset($result->password);
 
         return $result;
+    }
+
+    /**
+     * Find user by username
+     *
+     * @param string $username
+     * @return void
+     */
+    public function findByUsername(string $username, bool $safe=true)
+    {
+        $result = $this->findBy([[
+            'key'       => "username",
+            'value'     => $username,
+            'type'      => Query::PARAM_STR,
+            'relation'  => Query::EQUAL,
+        ]]);
+
+        if ($safe) unset($result->password);
+
+        return $result;
+    }
+
+    /**
+     * Find user by email or username
+     *
+     * @param string $login
+     * @return void
+     */
+    public function findByEmailOrUsername(string $login, bool $safe=true)
+    {
+        // TODO :
+
+        // $result = $this->findBy([[
+        //     'key'       => "username",
+        //     'value'     => $login,
+        //     'type'      => Query::PARAM_STR,
+        //     'relation'  => Query::EQUAL,
+        // ]]);
+
+        // if ($safe) unset($result->password);
+
+        // return $result;
     }
 
     /**

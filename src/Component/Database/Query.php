@@ -51,8 +51,8 @@ abstract class Query
     const NOT_EQUAL         = "<>";
     const NOT               = "!=";
 
-    const BINDING_VALUE     = "bindValue";
-    const BINDING_PARAM     = "bindParam";
+    // const BINDING_VALUE     = "bindValue";
+    // const BINDING_PARAM     = "bindParam";
 
     const FETCH_LAZY        = \PDO::FETCH_LAZY;
     const FETCH_ASSOC       = \PDO::FETCH_ASSOC;

@@ -267,6 +267,42 @@ abstract class AbstractController
     }
 
     /**
+     * Insert into database
+     *
+     * @param array $data
+     * @return void
+     */
+    protected function insert(array $data)
+    {
+        $model = $this->getModel();
+
+        if ($model)
+        {
+            return $model->insert($data);
+        }
+
+        return false;
+    }
+
+    /**
+     * Update database
+     *
+     * @param array $options
+     * @return void
+     */
+    // protected function update(array $options)
+    // {
+    //     $model = $this->getModel();
+
+    //     if ($model)
+    //     {
+    //         return $model->update($options);
+    //     }
+
+    //     return false;
+    // }
+
+    /**
      * Find all with options
      *
      * @param array $options
@@ -284,8 +320,6 @@ abstract class AbstractController
         return 0;
     }
 
-    // TODO: insert
-    // TODO: update
     // TODO: delete
 
 
@@ -344,8 +378,35 @@ abstract class AbstractController
 
 
 
-    public function isGranted()
+    public function isGranted($test="yes")
     {
+        // Is user loged in
+        // --
+
+        $isAutheticated = $this->isAuthenticated();
+
+
+        // is user have allowed roles ?
+        // --
+
+        $user = $this->user();
+
+
+        // Get route guards
+        // --
+
+        $guards = getApp()->routing()->get('guards');
+
+
+
+        dump( $isAutheticated );
+        dump( $user );
+        dump( $guards );
+
+
+
+
+
         $routesExceptions = [
             "_login",
             "_pending",
@@ -354,7 +415,6 @@ abstract class AbstractController
 
         dump( $_SESSION );
 
-        $activeRoute = getApp()->routing()->get('active');
 
         if (in_array($activeRoute['name'], $routesExceptions))
         {

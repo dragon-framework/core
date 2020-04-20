@@ -43,6 +43,12 @@ Create the `config/security.php` based on `config/security-dist.php`.
 |`activation`|`bool`|false|Registration need activation.|
 |`activation_delayed`|`integer`|0|Delay (in minute) before user must activate his account to accede to the service.|
 
+## Constants {#constants}
+
+|Key|Type|Default|Path|
+|--|--|--|--|
+|`ROLE_ANONYMOUS`|`string`|"statement"|`\Dragon\Component\Security\Definition::ROLE_ANONYMOUS`|
+
 ## Routes {#routes}
 
 Routing definition for security section.

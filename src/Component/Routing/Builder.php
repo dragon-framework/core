@@ -114,6 +114,36 @@ class Builder
     }
 
     /**
+     * Retuen the active route name
+     *
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        $route = $this->router->match();
+
+        return $route['name'] ?? null;
+    }
+
+    /**
+     * Return guards of current route
+     *
+     * @return array
+     */
+    public function getGuards(): array
+    {
+        foreach ($this->routes as $route)
+        {
+            if ($route[3] == $this->getName())
+            {
+                return $route[4];
+            }
+        }
+
+        return [];
+    }
+
+    /**
      * Is route active
      *
      * @param string $routeName
