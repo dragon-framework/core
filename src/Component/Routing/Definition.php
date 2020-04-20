@@ -99,7 +99,7 @@ class Definition
             // Guard / Access Control
             // --
 
-            $_guards = ["ANONYMOUS"];
+            $_guards = [ROLE_ANONYMOUS];
 
             if (isset( $_params['guards'] ))
             {

@@ -259,7 +259,7 @@ class SecurityController extends AbstractAdminController
 
             if (empty($errors))
             {
-                $roles = array_merge($this->config->get('registration_default_roles'), ["ADMIN"]);
+                $roles = array_merge($this->config->get('registration_default_roles'));
 
                 // Save data in database
                 $registration = $this->securityModel->insert([
@@ -525,7 +525,7 @@ class SecurityController extends AbstractAdminController
     {
         if (session_id())
         {
-            $roles = array_merge(['AUTHENTICATED'], json_decode($user->roles, true));
+            $roles = json_decode($user->roles, true);
 
             $_SESSION['user'] = [
                 'id' => $user->id,

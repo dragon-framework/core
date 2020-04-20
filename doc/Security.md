@@ -47,7 +47,10 @@ Create the `config/security.php` based on `config/security-dist.php`.
 
 |Key|Type|Default|Path|
 |--|--|--|--|
-|`ROLE_ANONYMOUS`|`string`|"statement"|`\Dragon\Component\Security\Definition::ROLE_ANONYMOUS`|
+|`ROLE_ANONYMOUS`|`string`|"ROLE_ANONYMOUS"|`ROLE_ANONYMOUS`|
+|`ROLE_USER`|`string`|"ROLE_USER"|`ROLE_USER`|
+|`ROLE_ADMIN`|`string`|"ROLE_ADMIN"|`ROLE_ADMIN`|
+|`ROLE_SUPER_ADMIN`|`string`|"ROLE_SUPER_ADMIN"|`ROLE_SUPER_ADMIN`|
 
 ## Routes {#routes}
 

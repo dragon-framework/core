@@ -150,8 +150,8 @@ class Request
     // Referer
     // --
 
-    private function getReferer(): ?string
+    public function getReferer(): ?string
     {
-        return $_SERVER['HTTP_REFERER'] ?? null;
+        return $_SESSION['_REFERER'] ?? $_SERVER['HTTP_REFERER'] ?? null;
     }
 }

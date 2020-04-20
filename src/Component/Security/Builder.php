@@ -76,21 +76,33 @@ class Builder
      * @param string|array $roles
      * @return boolean
      */
-    public function hasRoles($roles): bool
+    public function hasRole(string $role): bool
     {
-        if (!is_array($roles))
+        $user = $this->user();
+        
+        return $this->checkRole($role, $user['roles'] ?? []);
+    }
+
+    /**
+     * Check hierarchical role
+     *
+     * @param string $role
+     * @param array $userRoles
+     * @return boolean
+     */
+    private function checkRole(string $role, array $userRoles): bool
+    {
+        if (in_array($role, $userRoles) || $role == ROLE_ANONYMOUS)
         {
-            $roles = [$roles];
+            return true;
         }
 
-        // Retrieve users roles
-        $usersRoles = [];
-        // ...
+        if (!$parent = array_keys(ROLES_HIERARCHY, $role))
+        {
+            return false;
+        }
 
-        // Check if $roles in array $usersRoles
-        // ...
-
-        return false;
+        return $this->checkRole($parent[0] ?? $role, $userRoles);
     }
     
 }

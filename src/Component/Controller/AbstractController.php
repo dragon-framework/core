@@ -45,6 +45,21 @@ abstract class AbstractController
 
         $this->flashbag = new FlashBag;
         $this->flashdata = new FlashData;
+
+    }
+    
+    public function __destruct()
+    {
+        if (session_id())
+        {
+            $routing= getApp()->routing();
+            $active = $routing->get('active');
+            $params = $active['params'] ?? [];
+            $name   = $routing->get('name');
+            $uri    = $routing->generateUrl($name, $params, true);
+
+            $_SESSION['_REFERER'] = $uri;
+        }
     }
 
     /**
@@ -368,57 +383,24 @@ abstract class AbstractController
      * @param string|array $roles
      * @return boolean
      */
-    public function hasRoles($roles): bool
+    public function hasRole(string $role): bool
     {
-        return getApp()->security()->hasRoles($roles);
+        return getApp()->security()->hasRole($role);
     }
 
-
-
-
-
-
-    public function isGranted($test="yes")
+    /**
+     * Is access granted
+     *
+     * @return boolean
+     */
+    public function isGranted(): bool
     {
-        // Is user loged in
-        // --
-
-        $isAutheticated = $this->isAuthenticated();
-
-
-        // is user have allowed roles ?
-        // --
-
-        $user = $this->user();
-
-
-        // Get route guards
-        // --
-
-        $guards = getApp()->routing()->get('guards');
-
-
-
-        dump( $isAutheticated );
-        dump( $user );
-        dump( $guards );
-
-
-
-
-
-        $routesExceptions = [
-            "_login",
-            "_pending",
-            "_logout",
-        ];
-
-        dump( $_SESSION );
-
-
-        if (in_array($activeRoute['name'], $routesExceptions))
+        foreach (getApp()->routing()->get('guards') as $guard)
         {
-            return true;
+            if ($this->hasRole($guard))
+            {
+                return true;
+            }
         }
 
         return false;
