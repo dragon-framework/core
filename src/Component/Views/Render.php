@@ -7,7 +7,6 @@ class Render
 {
     const REGEX_EXTENSIONS_TYPE = "/(Function|Filter)\.php$/";
 
-    private $themeDirectory;
     private $engine;
 
     public function __construct()
@@ -18,7 +17,47 @@ class Render
 
     private function setEngine(): self
     {
-        $loader = new \Twig\Loader\FilesystemLoader( Directory::DIRECTORY_APP_TEMPLATES );
+
+        // Twig Loader by WebPart
+        // --
+
+        $routing = getApp()->routing();
+        $activeRoute = $routing->get('active');
+        $activeRouteName = $activeRoute['name'];
+
+        $webPart = "public";
+
+        foreach ($routing->get('routes') as $route)
+        {
+            if ($route[3] === $activeRouteName)
+            {
+                $webPart = $route[6];
+                break;
+            }
+        }
+
+        // dump( $webPart );
+
+        switch ($webPart)
+        {
+            case 'admin':
+                $loader = new \Twig\Loader\FilesystemLoader( Directory::DIRECTORY_APP_TEMPLATES."admin" );
+            break;
+
+            case 'doc':
+                $loader = new \Twig\Loader\FilesystemLoader( Directory::DIRECTORY_APP_TEMPLATES."admin" );
+            break;
+
+            case 'security':
+                $loader = new \Twig\Loader\FilesystemLoader( Directory::DIRECTORY_APP_TEMPLATES."security" );
+            break;
+
+            default:
+            case 'public':
+                $loader = new \Twig\Loader\FilesystemLoader( Directory::DIRECTORY_APP_TEMPLATES."website" );
+            break;
+        }
+        
 
         $this->engine = new \Twig\Environment($loader, [
             // 'cache' => './path/to/compilation_cache',

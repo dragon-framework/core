@@ -7,14 +7,6 @@ use Dragon\Component\FileSystem\FileSystem;
 class Definition
 {
     /**
-     * Routes input definition file
-     */
-    // const APP_SOURCE = Directory::DIRECTORY_APP_CONFIG . "routes/routes.php";
-    // const APP_SOURCE = Directory::DIRECTORY_APP_CONFIG . "routes/api-routes.php";
-    // const APP_SOURCE = Directory::DIRECTORY_APP_CONFIG . "routes/admin-routes.php";
-    // const CORE_SOURCE = __DIR__ . DS . "Resources" . DS . "DefaultRoutes.php";
-
-    /**
      * Routes final definition
      *
      * @var array
@@ -36,9 +28,10 @@ class Definition
         $fs = new FileSystem;
 
         $this->definitions = array_merge($this->definitions, $this->format( "public", $fs->include( __DIR__ . DS . "Resources" . DS . "DefaultRoutes.php" ) ?? [] ));
-        $this->definitions = array_merge($this->definitions, $this->format( "public", $fs->include( Directory::DIRECTORY_APP_CONFIG . "routes/routes.php" ) ?? [] ));
-        $this->definitions = array_merge($this->definitions, $this->format( "admin", $fs->include( Directory::DIRECTORY_APP_CONFIG . "routes/admin-routes.php" ) ?? [] ));
-        $this->definitions = array_merge($this->definitions, $this->format( "api", $fs->include( Directory::DIRECTORY_APP_CONFIG . "routes/api-routes.php" ) ?? [] ));
+        $this->definitions = array_merge($this->definitions, $this->format( "security", $fs->include( __DIR__ . DS . ".." . DS . "Security" . DS . "Routes.php" ) ?? [] ));
+        $this->definitions = array_merge($this->definitions, $this->format( "public", $fs->include( Directory::DIRECTORY_APP_CONFIG . "routes/website.php" ) ?? [] ));
+        $this->definitions = array_merge($this->definitions, $this->format( "admin", $fs->include( Directory::DIRECTORY_APP_CONFIG . "routes/admin.php" ) ?? [] ));
+        $this->definitions = array_merge($this->definitions, $this->format( "api", $fs->include( Directory::DIRECTORY_APP_CONFIG . "routes/api.php" ) ?? [] ));
 
         return $this;
     }
@@ -107,6 +100,17 @@ class Definition
             }
 
 
+            // Data / Additional data
+            // --
+
+            $_data = [];
+
+            if (isset( $_params['data'] ))
+            {
+                $_data = $_params['data'];
+            }
+
+
             // --
 
             if (isset( $_params['children'] ) && is_array( $_params['children'] ))
@@ -124,7 +128,7 @@ class Definition
                 switch ($target) 
                 {
                     case 'admin':
-                        $namespace = "App\\Controllers\\BackOffice\\";
+                        $namespace = "App\\Controllers\\Admin\\";
                         if (!class_exists($_class))
                         {
                             $class = $namespace.$_class;
@@ -143,6 +147,33 @@ class Definition
                             $_callableParts, 
                             "admin:".$_name,
                             $_guards,
+                            $_data,
+                            "admin", // WebPart
+                        ];
+                        break;
+
+                    case 'security':
+                        $namespace = "App\\Controllers\\Security\\";
+                        if (!class_exists($_class))
+                        {
+                            $class = $namespace.$_class;
+                        }
+                        else
+                        {
+                            $class = $_class;
+                        }
+    
+                        $glue = $_callableParts_separator;
+                        $_callableParts = implode($glue, [$class, $method]);
+    
+                        $route = [
+                            $_methods, 
+                            $_path, 
+                            $_callableParts, 
+                            $_name, // "security:".$_name,
+                            $_guards,
+                            $_data,
+                            "security", // WebPart
                         ];
                         break;
 
@@ -166,12 +197,14 @@ class Definition
                             $_callableParts, 
                             "api:".$_name,
                             $_guards,
+                            $_data,
+                            "api", // WebPart
                         ];
                         break;
 
                     case 'public':
                     default:
-                        $namespace = "App\\Controllers\\FrontOffice\\";
+                        $namespace = "App\\Controllers\\Website\\";
                         if (!class_exists($_class))
                         {
                             $class = $namespace.$_class;
@@ -190,6 +223,8 @@ class Definition
                             $_callableParts, 
                             $_name,
                             $_guards,
+                            $_data,
+                            "public", // WebPart
                         ];
                         break;
                 }

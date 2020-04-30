@@ -8,6 +8,6 @@ return array_merge(
     $fs->include(__DIR__."/../../Documentation/Routes.php") ?? [],
 
     // Security routes
-    $fs->include(__DIR__."/../../Security/Routes.php") ?? [],
+    // $fs->include(__DIR__."/../../Security/Routes.php") ?? [],
 
 );

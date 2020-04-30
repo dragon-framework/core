@@ -20,6 +20,7 @@ class Directory
 	 * Path of the Project "src/Templates" directory
 	 */
 	const DIRECTORY_APP_TEMPLATES	= self::DIRECTORY_APP_SRC . "Templates" . DS;
+	const DIRECTORY_CORE_TEMPLATES 	= __DIR__ . DS . ".." . DS . "Templates" . DS;
 
 	/**
 	 * Path of the Project "src/Extension" directory

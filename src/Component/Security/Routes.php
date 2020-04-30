@@ -35,9 +35,9 @@
         'guards'        => [ROLE_ANONYMOUS],
     ],
 
-    '_forgotten_password' => [
-        'path'          => "/forgotten-password",
-        'controller'    => "Dragon\\Component\\Security\\SecurityController#forgotten_password",
+    '_forgot_password' => [
+        'path'          => "/forgot-password",
+        'controller'    => "Dragon\\Component\\Security\\SecurityController#forgot_password",
         'methods'       => ["GET", "POST"],
         'guards'        => [ROLE_USER],
     ],
@@ -49,12 +49,12 @@
         'guards'        => [ROLE_USER],
     ],
 
-    '_profile' => [
-        'path'          => "/profile",
-        'controller'    => "Dragon\\Component\\Security\\SecurityController#profile",
-        'methods'       => ["GET"],
-        'guards'        => [ROLE_USER],
-    ],
+    // '_profile' => [
+    //     'path'          => "/profile",
+    //     'controller'    => "Dragon\\Component\\Security\\SecurityController#profile",
+    //     'methods'       => ["GET"],
+    //     'guards'        => [ROLE_USER],
+    // ],
 
     '_activation' => [
         'path'          => "/activation/[:token]",

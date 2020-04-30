@@ -18,9 +18,15 @@ class FlashFunction
     public function getFunctions(): array
     {
         return [
+            'hasFlashBag',
             'getFlashBag',
             'getFlashData'
         ];
+    }
+
+    public function hasFlashBag()
+    {
+        return $this->flashbag->hasFlashBag();
     }
 
     public function getFlashBag()

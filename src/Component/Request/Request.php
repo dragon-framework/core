@@ -137,6 +137,11 @@ class Request
         return $_SERVER['REQUEST_METHOD'] === "POST";
     }
 
+    public function isXMLHttpRequest(): bool
+    {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+    }
+
     
     // User Agent
     // --

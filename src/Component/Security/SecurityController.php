@@ -47,9 +47,9 @@ class SecurityController extends AbstractAdminController
         }
 
         // If user already loged in
-        if ($this->user())
+        if ($this->isAuthenticated())
         {
-            $this->redirectToRoute( $this->config->get('redirect_on_login') );
+            $this->redirectAfterAuthetication();
         }
 
         // Switch register controller by strategy
@@ -82,6 +82,11 @@ class SecurityController extends AbstractAdminController
      */
     public function login()
     {
+        if ($this->isAuthenticated())
+        {
+            $this->redirectAfterAuthetication();
+        }
+
         switch ($this->config->get('strategy'))
         {
             case Definition::STRATEGY_EMAIL:
@@ -111,7 +116,7 @@ class SecurityController extends AbstractAdminController
      *
      * @return void
      */
-    public function forgetUsername()
+    public function forgot_username()
     {
     }
 
@@ -120,8 +125,9 @@ class SecurityController extends AbstractAdminController
      *
      * @return void
      */
-    public function forgetPassword()
+    public function forgot_password()
     {
+        return $this->render("pages/forgotten/password.html");
     }
 
     /**
@@ -329,7 +335,7 @@ class SecurityController extends AbstractAdminController
             $this->redirectToRoute('_register');
         }
 
-        return $this->render("_security/pages/register-by-password.html");
+        return $this->render("pages/register/by-password.html");
     }
 
     /**
@@ -343,7 +349,7 @@ class SecurityController extends AbstractAdminController
         {
         }
 
-        return $this->render("_security/pages/register-by-email.html");
+        return $this->render("pages/register/by-email.html");
     }
 
 
@@ -372,7 +378,7 @@ class SecurityController extends AbstractAdminController
             $this->autheticationStrategy_password($email, $password_text);
         }
 
-        return $this->render("_security/pages/login-by-password.html", [
+        return $this->render("pages/login/by-password.html", [
             'flashdata' => $this->flashdata->getFlashData()
         ]);
     }
@@ -506,7 +512,7 @@ class SecurityController extends AbstractAdminController
             }
         }
 
-        return $this->render("_security/pages/login-by-email.html", [
+        return $this->render("pages/login/by-email.html", [
             'flashdata' => $this->flashdata->getFlashData()
         ]);
     }
@@ -599,8 +605,12 @@ class SecurityController extends AbstractAdminController
         // Proceed to authentication
         $this->authenticate($user);
 
-        // redirect
-        $this->redirectToRoute( $this->config->get('redirect_on_login') );
+
+        // Redirect
+        // --
+
+        $this->redirectAfterAuthetication();
+
     }
 
 
@@ -701,5 +711,18 @@ class SecurityController extends AbstractAdminController
                 $this->redirectToRoute("_login");
             }
         }
+    }
+
+
+    private function redirectAfterAuthetication()
+    {
+        $routeToRedirect = $this->config->get('redirect_on_login');
+
+        if ($routeToRedirect === "_referer")
+        {
+            $this->redirect( $this->request()->getReferer() );
+        }
+
+        $this->redirectToRoute( $this->config->get('redirect_on_login') );
     }
 }

@@ -144,6 +144,24 @@ class Builder
     }
 
     /**
+     * Return additional data
+     *
+     * @return array
+     */
+    public function getData(): array
+    {
+        foreach ($this->routes as $route)
+        {
+            if ($route[3] == $this->getName())
+            {
+                return $route[5];
+            }
+        }
+
+        return [];
+    }
+
+    /**
      * Is route active
      *
      * @param string $routeName
